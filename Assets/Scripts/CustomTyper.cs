@@ -147,7 +147,7 @@ public class CustomTyper : MonoBehaviour
         // Incorrect
         else if (input[0] != wordList[wordIndex].Text[charIndex]) {
             string origChar = wordList[wordIndex].Text[charIndex].ToString();
-            string formattedInput = FormatInput(origChar, (int) Enums.CorrectInputFormat);
+            string formattedInput = FormatInput(origChar, (int) Enums.IncorrectInputFormat);
             sb.Remove(caretPosition, 1).Insert(caretPosition, formattedInput);
 
             // Update word output
