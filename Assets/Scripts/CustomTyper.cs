@@ -17,7 +17,7 @@ public class CustomTyper : MonoBehaviour
 
     // Indexing current word and current char
     private int wordIndex = 0;
-    private int charIndex = 0;
+    private int charIndex = 0;  // also represents number of typed characters
     private int caretPosition = 0;
 
     // Colors for correct, incorrect, default characters
@@ -115,7 +115,7 @@ public class CustomTyper : MonoBehaviour
             wordIndex, charIndex, caretPosition));
 
         // If current word input is already longer than actual word, show as incorrect
-        if (wordList[wordIndex].LastIndex >= wordList[wordIndex].Text.Length) {
+        if (wordList[wordIndex].IsFullyTyped()) {
             string formattedInput = FormatInput(input, (int) Enums.IncorrectInputFormat);
             sb.Insert(caretPosition, formattedInput);
 
@@ -124,10 +124,13 @@ public class CustomTyper : MonoBehaviour
 
             // Update caret position
             caretPosition += formattedInput.Length;
+
+            // Update charIndex
+            charIndex += 1;
         }
 
         // Check if input char is correct
-        else if (input[0] == wordList[wordIndex].Text[charIndex]) {
+        else if (input[0] == wordList[wordIndex].GetNextChar()) {
             // Replace character with green character
             string formattedInput = FormatInput(input, (int) Enums.CorrectInputFormat);
             sb.Remove(caretPosition, 1).Insert(caretPosition, formattedInput);
@@ -140,12 +143,12 @@ public class CustomTyper : MonoBehaviour
 
             // Update char index and word properties
             charIndex += 1;
-            wordList[wordIndex].LastIndex += 1;
+            wordList[wordIndex].nTyped += 1;
             wordList[wordIndex].nCorrect += 1;
         }
 
         // Incorrect
-        else if (input[0] != wordList[wordIndex].Text[charIndex]) {
+        else if (input[0] != wordList[wordIndex].GetNextChar()) {
             string origChar = wordList[wordIndex].Text[charIndex].ToString();
             string formattedInput = FormatInput(origChar, (int) Enums.IncorrectInputFormat);
             sb.Remove(caretPosition, 1).Insert(caretPosition, formattedInput);
@@ -158,14 +161,49 @@ public class CustomTyper : MonoBehaviour
 
             // Update char index and word properties
             charIndex += 1;
-            wordList[wordIndex].LastIndex += 1;
+            wordList[wordIndex].nTyped += 1;
         }
     }
 
+    /**
+        Whitespace - end of current word
+        Rich Text Tag - current word (check for excess)
+    */
     void EnterBackspace() {
-        // TODO: Go back 1 space, includes rich tags
-
+        int nTag = 0;
+        bool onCurrentWord = false;
         
+        char? lastChar = null;
+        // Backspacing current word, check for excess
+        if (charIndex > 0) {
+            onCurrentWord = true;
+            
+            if (charIndex <= wordList[wordIndex].Text.Length)
+                lastChar = wordList[wordIndex].GetPrevChar();
+        }
+
+        if (onCurrentWord) {
+            // Current Implementation: Mid-Word
+            while (nTag != 2) {
+                caretPosition -= 1;
+                if (sb[caretPosition] == '<') {
+                    nTag++;
+                }
+                sb.Remove(caretPosition, 1);
+            }
+            
+            // Not excess
+            if (lastChar != null) {
+                sb.Insert(caretPosition, lastChar);
+                wordList[wordIndex].nTyped -= 1;
+            }
+            
+            // Update word output
+            wordOutput.text = sb.ToString();
+
+            // Update word properties
+            charIndex -= 1;  
+        }
     }
 
     /**
@@ -173,14 +211,14 @@ public class CustomTyper : MonoBehaviour
     */
     void EnterSpacebar() {
         // Check for premature spacebar (word has not finished yet)
-        if (wordList[wordIndex].LastIndex < wordList[wordIndex].Text.Length) {
-            caretPosition += wordList[wordIndex].Text.Length - wordList[wordIndex].LastIndex + 1; /// + 1 for whitespace
+        if (!wordList[wordIndex].IsFullyTyped()) {
+            caretPosition += wordList[wordIndex].GetRemainingChars() + 1; /// + 1 for whitespace
         }
         // Move caret only one (user finished the word)
         else {
             caretPosition += 1;
         }
-        // Next word
+        // Next word, update indices
         wordIndex += 1;
         charIndex = 0;
     }
