@@ -18,6 +18,7 @@ public class CustomTyper : MonoBehaviour
     public WordBank wordBank = null;
     public StatsCalc statsCalc = null;
     public Player player = null;
+    public Boss boss = null;
 
     private string sourceString = string.Empty;
     private string sourceString2 = string.Empty;
@@ -239,6 +240,7 @@ public class CustomTyper : MonoBehaviour
             wordList[wordIndex].nTyped += 1;
             wordList[wordIndex].nCorrect += 1;
             numCorrectChars += 1;
+            boss.TakeDamage(.5f);
         }
 
         // Incorrect
