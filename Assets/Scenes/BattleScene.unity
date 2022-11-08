@@ -565,6 +565,7 @@ MonoBehaviour:
   currWPM: {fileID: 1976949886}
   wordBank: {fileID: 1363960120}
   statsCalc: {fileID: 4120032381447231500}
+  player: {fileID: 1997416438}
 --- !u!4 &987233049
 Transform:
   m_ObjectHideFlags: 0

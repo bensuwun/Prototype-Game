@@ -22,10 +22,12 @@ public class Player : MonoBehaviour
         StartCoroutine(healthDecay(currentHealth));
 
         // to be changed adjusted -> Press spacebar to take damage for now
-        if (Input.GetKeyDown(KeyCode.Space)) 
+        if (Input.GetKeyDown(KeyCode.Backspace)) 
         {
             TakeDamage(10);
         }
+
+        if (CustomTyper.isIdle) TakeDamage(10);
  
     }
 
@@ -46,7 +48,7 @@ public class Player : MonoBehaviour
 
         while (true)   
         {
-            TakeDamage(0.0007f);  //to be adjusted
+            TakeDamage(0.007f);  //to be adjusted
             yield return null;
         }
     }

@@ -15,6 +15,7 @@ public class CustomTyper : MonoBehaviour
 
     public WordBank wordBank = null;
     public StatsCalc statsCalc = null;
+    public Player player = null;
 
     private string sourceString = string.Empty;
     private List<Word> wordList = new List<Word>();
@@ -24,6 +25,7 @@ public class CustomTyper : MonoBehaviour
     private int wordIndex = 0;
     private int charIndex = 0;  // also represents number of typed characters
     private int caretPosition = 0;
+    private int caretPosition2 = 0;
 
     // Colors for correct, incorrect, default characters
     private string correctColor = "green";
@@ -33,6 +35,11 @@ public class CustomTyper : MonoBehaviour
     private int numCharsTyped = 0;
     private int numCorrectChars = 0;
     private int numSpace = 0;
+
+    public static bool isIdle = false;
+    private float nextCheckTime = 0.0f;
+    private float checkEvery = 10f;
+
 
     // Enums
     private enum Enums {
@@ -106,8 +113,7 @@ public class CustomTyper : MonoBehaviour
             }
 
             // Display current WPM on screen
-            currWPM.text = statsCalc.getCurrWPM(numCorrectChars, numSpace);
-            // currWPM.text = getRawWPM(numCharsTyped, numSpace);
+            StartCoroutine(checkWPM());
         } 
     }
 
@@ -277,6 +283,11 @@ public class CustomTyper : MonoBehaviour
         return isThereNoNextWord && isWordFullyTyped;
     }
 
-
-    
+    private IEnumerator checkWPM() {
+        while (true) {
+            currWPM.text = statsCalc.getCurrWPM(numCorrectChars, numSpace);
+            yield return null;
+        }
+        
+    }
 }
