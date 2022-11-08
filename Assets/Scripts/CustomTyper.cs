@@ -47,13 +47,18 @@ public class CustomTyper : MonoBehaviour
 
         // Parse source string to list of words
         foreach(string str in sourceString.Split(" ")) {
-            wordList.Add(new Word(str));
+            Word newWord = new Word(str);
+            wordList.Add(newWord);
         }
-
         // Display source string in output text
         wordOutput.text = sourceString;
 
         sb = new StringBuilder(sourceString);
+    }
+
+    private void ResetIndeces(){
+        caretPosition = 0;
+        wordIndex += 1; // temporary solution for extra " " at end of each set of words
     }
 
     // Update is called once per frame
@@ -76,6 +81,8 @@ public class CustomTyper : MonoBehaviour
                 case 2:
                     EnterBackspace();
                     break;
+                default:
+                    break;
 
             }
 
@@ -83,6 +90,7 @@ public class CustomTyper : MonoBehaviour
             // Check if the current words on the screen are already finished and set new words
             if (AreWordsComplete()) {
                 SetCurrentWords();
+                ResetIndeces();
             }
         } 
     }
@@ -128,7 +136,7 @@ public class CustomTyper : MonoBehaviour
     void EnterChar(string input) {
         Debug.Log(string.Format("Word Index: {0} | Char Index: {1} | Caret Position: {2}", 
             wordIndex, charIndex, caretPosition));
-
+            
         // If current word input is already longer than actual word, show as incorrect
         if (wordList[wordIndex].IsFullyTyped()) {
             string formattedInput = FormatInput(input, (int) Enums.IncorrectInputFormat);
@@ -236,13 +244,17 @@ public class CustomTyper : MonoBehaviour
         // Next word, update indices
         wordIndex += 1;
         charIndex = 0;
+
     }
 
     // TODO: Check whether or not the remaining words are 0
     // Checks if the current line is already finished, return true if done, false if not
     private bool AreWordsComplete() {
         // check length of the remaining line
-        return false;
+        // no next word
+        bool isThereNoNextWord = wordList.Count == (wordIndex + 1);
+        bool isWordFullyTyped = wordList[wordIndex].IsFullyTyped();
+        return isThereNoNextWord && isWordFullyTyped;
     }
 
 
