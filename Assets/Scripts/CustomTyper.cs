@@ -10,8 +10,10 @@ public class CustomTyper : MonoBehaviour
     // Current word output
     public TextMeshProUGUI wordOutput;
 
-    // TODO: Generate/get source string from word bank or text file
-    private string sourceString = "a quick brown fox jumped over the lazy dog a quick brown fox jumped over the lazy dog a quick brown fox jumped over the lazy dog a quick brown fox jumped over the lazy dog";
+    // Word Bank
+    public WordBank wordBank = null;
+
+    private string sourceString = string.Empty;
     private List<Word> wordList = new List<Word>();
     private StringBuilder sb;
 
@@ -34,8 +36,15 @@ public class CustomTyper : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
+        SetCurrentWords();
+    }
+
+    // Sets the current words shown on screen
+    private void SetCurrentWords() {
+        // Get the words from the word bank
+        sourceString = wordBank.GetWords();
+
         // Parse source string to list of words
         foreach(string str in sourceString.Split(" ")) {
             wordList.Add(new Word(str));
@@ -48,8 +57,7 @@ public class CustomTyper : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         string inputString = Input.inputString;
         
         if (inputString.Length == 1) {
@@ -69,7 +77,19 @@ public class CustomTyper : MonoBehaviour
                     break;
 
             }
+            // TODO: implement AreWordsComplete()
+            // Check if the current words on the screen are already finished and set new words
+            if (AreWordsComplete()) {
+                SetCurrentWords();
+            }
         } 
+    }
+
+    // TODO: Check whether or not the remaining words are 0
+    // Checks if the current line is already finished, return true if done, false if not
+    private bool AreWordsComplete() {
+        // check length of the remaining line
+        return false;
     }
 
     /**
