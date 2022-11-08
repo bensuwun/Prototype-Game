@@ -60,6 +60,11 @@ public class Word {
     public bool IsSpelledCorrectly() {
         return nCorrect == Text.Length;
     }
-    
+    /**
+        Helper function to check if each char is typed correctly.
+    */
+    public bool IsTypeCorrectly() {
+        return false; // to be changed
+    }
 
 }
