@@ -19,6 +19,8 @@ public class CustomTyper : MonoBehaviour
     private List<Word> wordList = new List<Word>();
     private StringBuilder sb;
 
+
+
     // Indexing current word and current char
     private int wordIndex = 0;
     private int charIndex = 0;  // also represents number of typed characters
@@ -55,9 +57,7 @@ public class CustomTyper : MonoBehaviour
         currWPM.text = "0";
     }
 
-    // Sets the current words shown on screen
-    private void SetCurrentWords() {
-        // Get the words from the word bank
+    private void SetCurrentWords(){
         sourceString = wordBank.GetWords();
 
         // Parse source string to list of words
@@ -72,7 +72,8 @@ public class CustomTyper : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         string inputString = Input.inputString;
         
         if (inputString.Length == 1) {
@@ -104,13 +105,6 @@ public class CustomTyper : MonoBehaviour
             currWPM.text = getCurrWPM();
             // currWPM.text = getRawWPM();
         } 
-    }
-
-    // TODO: Check whether or not the remaining words are 0
-    // Checks if the current line is already finished, return true if done, false if not
-    private bool AreWordsComplete() {
-        // check length of the remaining line
-        return false;
     }
 
     /**
@@ -293,4 +287,13 @@ public class CustomTyper : MonoBehaviour
         int rawWPM = (int) ((numCharsTyped + numSpace) * (60 / diffSec) / 5);
         return("" + rawWPM);
     } 
+    // TODO: Check whether or not the remaining words are 0
+    // Checks if the current line is already finished, return true if done, false if not
+    private bool AreWordsComplete() {
+        // check length of the remaining line
+        return false;
+    }
+
+
+    
 }
