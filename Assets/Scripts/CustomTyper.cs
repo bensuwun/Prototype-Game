@@ -10,11 +10,13 @@ public class CustomTyper : MonoBehaviour
     // Current word output
     public TextMeshProUGUI wordOutput;
 
+    public WordBank wordBank;
     // TODO: Generate/get source string from word bank or text file
-    private WordBank wordBank = null;
     private string sourceString = "a quick brown fox jumped over the lazy dog a quick brown fox jumped over the lazy dog a quick brown fox jumped over the lazy dog a quick brown fox jumped over the lazy dog";
     private List<Word> wordList = new List<Word>();
     private StringBuilder sb;
+
+
 
     // Indexing current word and current char
     private int wordIndex = 0;
@@ -37,6 +39,10 @@ public class CustomTyper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SetCurrentWords();
+    }
+
+    private void SetCurrentWords(){
         sourceString = wordBank.GetWords();
 
         // Parse source string to list of words
