@@ -25,10 +25,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Backspace)) 
         {
             TakeDamage(10);
-        }
-
-        if (CustomTyper.isIdle) TakeDamage(10);
- 
+        } 
     }
 
     public void TakeDamage(float damage)

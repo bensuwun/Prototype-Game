@@ -25,7 +25,6 @@ public class CustomTyper : MonoBehaviour
     private int wordIndex = 0;
     private int charIndex = 0;  // also represents number of typed characters
     private int caretPosition = 0;
-    private int caretPosition2 = 0;
 
     // Colors for correct, incorrect, default characters
     private string correctColor = "green";
@@ -36,9 +35,8 @@ public class CustomTyper : MonoBehaviour
     private int numCorrectChars = 0;
     private int numSpace = 0;
 
-    public static bool isIdle = false;
-    private float nextCheckTime = 0.0f;
-    private float checkEvery = 10f;
+    private float lastIdleTime = 0f;
+    private float idleTimeLimit = 5f;
 
 
     // Enums
@@ -86,6 +84,7 @@ public class CustomTyper : MonoBehaviour
         string inputString = Input.inputString;
         
         if (inputString.Length == 1) {
+            lastIdleTime = Time.time;
             switch (CheckInput(inputString[0])) {
                 // Character - can further be correct, incorrect, or excess
                 case 0:
@@ -114,6 +113,7 @@ public class CustomTyper : MonoBehaviour
 
             // Display current WPM on screen
             StartCoroutine(checkWPM());
+            StartCoroutine(checkIdle());
         } 
     }
 
@@ -283,9 +283,23 @@ public class CustomTyper : MonoBehaviour
         return isThereNoNextWord && isWordFullyTyped;
     }
 
+    // sets the WPM
     private IEnumerator checkWPM() {
         while (true) {
             currWPM.text = statsCalc.getCurrWPM(numCorrectChars, numSpace);
+            yield return null;
+        }
+        
+    }
+
+    // checks for idleness and makes the player take damage whenever idle
+    private IEnumerator checkIdle() {
+        while (true) {
+            if (Time.time - lastIdleTime > idleTimeLimit) {
+                player.TakeDamage(10);
+                lastIdleTime = Time.time;
+            }
+        
             yield return null;
         }
         
