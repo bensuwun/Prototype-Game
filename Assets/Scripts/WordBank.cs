@@ -48,18 +48,25 @@ public class WordBank : MonoBehaviour
 
     // gets wordCount words from the word bank and returns it as a string split by " "
     public string GetWords() {
-        int wordCount = 10;
+        int wordCount = 6;
         string newWord = string.Empty;
         string newWords = string.Empty;
 
         for (int i = 0; i < wordCount; i++) {
+            if (workingWords.Count == 0) {
+                // working words is empty
+                workingWords.AddRange(originalWords);
+            }
+            
             if (workingWords.Count != 0) {
                 newWord = workingWords.Last();
                 workingWords.Remove(newWord);
                 newWords += newWord;
                 newWords += " ";
-            }
+            } 
+
         }
+
         return newWords;
     }
 }
