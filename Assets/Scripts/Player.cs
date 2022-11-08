@@ -36,6 +36,14 @@ public class Player : MonoBehaviour
         healthBar.SetHealth(currentHealth);
     }
 
+    public void increaseHealth(float increase)
+    {
+        if(currentHealth != maxHealth)
+            currentHealth += increase;
+        
+        healthBar.SetHealth(currentHealth);
+    }
+
       IEnumerator healthDecay(float currentHealth)
     {
         if(isRunning)
