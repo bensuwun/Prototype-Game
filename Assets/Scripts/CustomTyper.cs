@@ -10,9 +10,12 @@ public class CustomTyper : MonoBehaviour
     // Current word output
     public TextMeshProUGUI wordOutput;
 
-    public WordBank wordBank;
-    // TODO: Generate/get source string from word bank or text file
-    private string sourceString = "a quick brown fox jumped over the lazy dog a quick brown fox jumped over the lazy dog a quick brown fox jumped over the lazy dog a quick brown fox jumped over the lazy dog";
+    // Current WPM
+    public TextMeshProUGUI currWPM;
+
+    public WordBank wordBank = null;
+
+    private string sourceString = string.Empty;
     private List<Word> wordList = new List<Word>();
     private StringBuilder sb;
 
@@ -28,6 +31,12 @@ public class CustomTyper : MonoBehaviour
     private string incorrectColor = "red";
     private string defaultColor = "#808080";
 
+    private DateTime start;
+    private DateTime end;
+    private int numCharsTyped = 0;
+    private int numCorrectChars = 0;
+    private int numSpace = 0;
+
     // Enums
     private enum Enums {
         // Input Formats
@@ -37,9 +46,15 @@ public class CustomTyper : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
+        // sets the words that are displayed
         SetCurrentWords();
+
+        // gets the current time
+        getStart();
+
+        // show current WPM to 0
+        currWPM.text = "0";
     }
 
     private void SetCurrentWords(){
@@ -92,6 +107,11 @@ public class CustomTyper : MonoBehaviour
                 SetCurrentWords();
                 ResetIndeces();
             }
+
+            getEnd();
+            // Display current WPM on screen
+            currWPM.text = getCurrWPM();
+            // currWPM.text = getRawWPM();
         } 
     }
 
@@ -168,6 +188,7 @@ public class CustomTyper : MonoBehaviour
             charIndex += 1;
             wordList[wordIndex].nTyped += 1;
             wordList[wordIndex].nCorrect += 1;
+            numCorrectChars += 1;
         }
 
         // Incorrect
@@ -186,6 +207,8 @@ public class CustomTyper : MonoBehaviour
             charIndex += 1;
             wordList[wordIndex].nTyped += 1;
         }
+
+        numCharsTyped += 1;
     }
 
     /**
@@ -240,6 +263,7 @@ public class CustomTyper : MonoBehaviour
         // Move caret only one (user finished the word)
         else {
             caretPosition += 1;
+            numSpace += 1;
         }
         // Next word, update indices
         wordIndex += 1;
@@ -247,6 +271,31 @@ public class CustomTyper : MonoBehaviour
 
     }
 
+    // gets the start time
+    public void getStart() {
+        start = DateTime.Now;
+    }
+
+    // gets the end time
+    public void getEnd() {
+        end = DateTime.Now;
+    }
+
+    // calculates the current WPM
+    public string getCurrWPM() {
+        TimeSpan currDiff = end - start;
+        int diffSec = (int) currDiff.TotalSeconds;
+        int currWPM = (int) ((numCorrectChars + numSpace) * (60 / diffSec) / 5);
+        return("" + currWPM);
+    } 
+
+    // calculates raw WPM (including mistakes)
+    public string getRawWPM() {
+        TimeSpan currDiff = end - start;
+        int diffSec = (int) currDiff.TotalSeconds;
+        int rawWPM = (int) ((numCharsTyped + numSpace) * (60 / diffSec) / 5);
+        return("" + rawWPM);
+    } 
     // TODO: Check whether or not the remaining words are 0
     // Checks if the current line is already finished, return true if done, false if not
     private bool AreWordsComplete() {
