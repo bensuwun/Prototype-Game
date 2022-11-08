@@ -9,6 +9,8 @@ public class CustomTyper : MonoBehaviour
 {
     // Current word output
     public TextMeshProUGUI wordOutput;
+    public TextMeshProUGUI wordOutput2;
+    public TextMeshProUGUI wordOutput3;
 
     // Current WPM
     public TextMeshProUGUI currWPM;
@@ -18,7 +20,11 @@ public class CustomTyper : MonoBehaviour
     public Player player = null;
 
     private string sourceString = string.Empty;
+    private string sourceString2 = string.Empty;
+    private string sourceString3 = string.Empty; 
     private List<Word> wordList = new List<Word>();
+    private List<Word> wordList2 = new List<Word>();
+    private List<Word> wordList3 = new List<Word>();
     private StringBuilder sb;
 
     // Indexing current word and current char
@@ -50,7 +56,7 @@ public class CustomTyper : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         // sets the words that are displayed
-        SetCurrentWords();
+        InitializeWordLists();
 
         // gets the current time
         statsCalc.getStart();
@@ -58,24 +64,66 @@ public class CustomTyper : MonoBehaviour
         // show current WPM to 0
         currWPM.text = "0";
     }
+    private void InitializeWordLists(){
+        // For initialization: Each list gets filled with words
+        
+        if(wordList.Count == 0){
+            SetWordListWords(wordList, out sourceString);
+            SetTextGUI(wordOutput, sourceString);
+        }
+        if(wordList2.Count == 0){
+            SetWordListWords(wordList2, out sourceString2);
+            SetTextGUI(wordOutput2, sourceString2);
+        }
+        if(wordList3.Count == 0){
+            SetWordListWords(wordList3, out sourceString3);
+            SetTextGUI(wordOutput3, sourceString3);         // Display source string in output text
+        }
+
+        sb = new StringBuilder(sourceString); // display string for first line ; basis for many code below
+    }
 
     private void SetCurrentWords(){
-        sourceString = wordBank.GetWords();
+        // Once wordlist 1 is empty (Player is done with the line)
+        // wordlist 1 <- wordlist 2 <- wordlist 3
+        // then wordlist 3 gets new set of words
+        wordList = wordList2;
+        wordList2 = wordList3;
+        wordList3 = new List<Word>();
 
-        // Parse source string to list of words
-        foreach(string str in sourceString.Split(" ")) {
+        // Update words to display
+        sourceString = String.Copy(sourceString2);
+        sourceString2 = String.Copy(sourceString3);
+        // sourceString3 = string.Empty;
+        SetWordListWords(wordList3, out sourceString3);
+
+        // Push updated words to GUI
+        SetTextGUI(wordOutput, sourceString);
+        SetTextGUI(wordOutput2, sourceString2);
+        SetTextGUI(wordOutput3, sourceString3);
+    }
+
+
+
+    // Parse source string to list of words
+    private void SetWordListWords(List<Word> words, out string outputStr){
+        string stringFromBank = wordBank.GetWords();
+        foreach(string str in stringFromBank.Split(" ")){
             Word newWord = new Word(str);
-            wordList.Add(newWord);
+            words.Add(newWord);
         }
-        // Display source string in output text
-        wordOutput.text = sourceString;
+        outputStr = stringFromBank;
+        Debug.Log(String.Format("Output String: {0}",outputStr));
+    }
 
-        sb = new StringBuilder(sourceString);
+    private void SetTextGUI(TextMeshProUGUI textArea, string str){
+        textArea.SetText(str);
     }
 
     private void ResetIndeces(){
         caretPosition = 0;
-        wordIndex += 1; // temporary solution for extra " " at end of each set of words
+        // wordIndex += 1; // temporary solution for extra " " at end of each set of words
+        wordIndex = 0;
     }
 
     // Update is called once per frame
@@ -104,7 +152,6 @@ public class CustomTyper : MonoBehaviour
 
             }
 
-            // TODO: implement AreWordsComplete()
             // Check if the current words on the screen are already finished and set new words
             if (AreWordsComplete()) {
                 SetCurrentWords();
@@ -260,6 +307,10 @@ public class CustomTyper : MonoBehaviour
         On spacebar input, checks for premature presses.
     */
     void EnterSpacebar() {
+        // do nothing if no character typed
+        if(charIndex == 0){
+            return;
+        }
         // Check for premature spacebar (word has not finished yet)
         if (!wordList[wordIndex].IsFullyTyped()) {
             caretPosition += wordList[wordIndex].GetRemainingChars() + 1; /// + 1 for whitespace
