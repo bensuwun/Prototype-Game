@@ -102,6 +102,8 @@ public class CustomTyper : MonoBehaviour
         SetTextGUI(wordOutput, sourceString);
         SetTextGUI(wordOutput2, sourceString2);
         SetTextGUI(wordOutput3, sourceString3);
+
+        sb = new StringBuilder(sourceString); 
     }
 
 

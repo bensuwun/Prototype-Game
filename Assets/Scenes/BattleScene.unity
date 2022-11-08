@@ -745,7 +745,7 @@ MonoBehaviour:
   wordBank: {fileID: 1363960120}
   statsCalc: {fileID: 4120032381447231500}
   player: {fileID: 1997416438}
-  boss: {fileID: 0}
+  boss: {fileID: 915062712}
 --- !u!4 &987233049
 Transform:
   m_ObjectHideFlags: 0
