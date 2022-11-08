@@ -172,6 +172,7 @@ public class CustomTyper : MonoBehaviour
 
             // Update charIndex
             charIndex += 1;
+            player.TakeDamage(1);
         }
 
         // Check if input char is correct
@@ -208,6 +209,7 @@ public class CustomTyper : MonoBehaviour
             // Update char index and word properties
             charIndex += 1;
             wordList[wordIndex].nTyped += 1;
+            player.TakeDamage(1);
         }
 
         numCharsTyped += 1;
