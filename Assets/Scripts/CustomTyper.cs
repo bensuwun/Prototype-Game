@@ -34,9 +34,9 @@ public class CustomTyper : MonoBehaviour
     private int caretPosition = 0;
 
     // Colors for correct, incorrect, default characters
-    private string correctColor = "green";
-    private string incorrectColor = "red";
-    private string defaultColor = "#808080";
+    public string correctColor = "green";
+    public string incorrectColor = "red";
+    public string defaultColor = "#808080";
 
     private int numCharsTyped = 0;
     private int numCorrectChars = 0;
