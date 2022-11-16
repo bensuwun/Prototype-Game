@@ -19,6 +19,7 @@ public class CustomTyper : MonoBehaviour
     public StatsCalc statsCalc = null;
     public Player player = null;
     public Boss boss = null;
+    public WordAnimator wordAnimator = null;
 
     private string sourceString = string.Empty;
     private string sourceString2 = string.Empty;
@@ -99,9 +100,13 @@ public class CustomTyper : MonoBehaviour
         SetWordListWords(wordList3, out sourceString3);
 
         // Push updated words to GUI
+        wordAnimator.wordNextLine(0);
         SetTextGUI(wordOutput, sourceString);
+        wordAnimator.wordNextLine(1);
         SetTextGUI(wordOutput2, sourceString2);
+        wordAnimator.wordNextLine(2);
         SetTextGUI(wordOutput3, sourceString3);
+
 
         sb = new StringBuilder(sourceString); 
     }
@@ -135,6 +140,7 @@ public class CustomTyper : MonoBehaviour
         string inputString = Input.inputString;
         
         if (inputString.Length == 1) {
+            // wordAnimators[0].SetTrigger("NextLineTrigger");
             lastIdleTime = Time.time;
             switch (CheckInput(inputString[0])) {
                 // Character - can further be correct, incorrect, or excess
