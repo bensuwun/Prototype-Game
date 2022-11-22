@@ -97,6 +97,7 @@ public class CustomTyper : MonoBehaviour
         sourceString = String.Copy(sourceString2);
         sourceString2 = String.Copy(sourceString3);
         // sourceString3 = string.Empty;
+
         SetWordListWords(wordList3, out sourceString3);
 
         // Push updated words to GUI
@@ -110,8 +111,42 @@ public class CustomTyper : MonoBehaviour
 
         sb = new StringBuilder(sourceString); 
     }
+    public List<Word> getWordList(int number){
+        if(number == 1)
+            return wordList;
+        else if(number == 2)
+            return wordList2;
+        else if(number == 3)
+            return wordList3; 
+        else return null;
+    }
 
+    public void SetWordListWords(List<Word> words ,int number){
+        string output = null;
+        if(number == 1)
+            wordList = words;
+        else if(number == 2)
+            wordList2 = words;
+        else if(number == 3)
+            wordList3 = words;
 
+        foreach (var word in words){
+            output += word.Text + " ";
+            // Debug.Log(String.Format("Word : {0}", word.Text ));
+        }
+        output.Remove(output.LastIndexOf(" "));
+        if(number == 1){
+            SetTextGUI(wordOutput, output);
+            sourceString = output;
+        }else if(number == 2){
+            SetTextGUI(wordOutput2, output);
+            sourceString2 = output;
+        }else if(number == 3){
+            SetTextGUI(wordOutput3, output);
+            sourceString3 = output;
+        }
+        Debug.Log(String.Format("Mash String: {0} Len: {1}",output, words.Count));
+    }
 
     // Parse source string to list of words
     private void SetWordListWords(List<Word> words, out string outputStr){
@@ -121,7 +156,8 @@ public class CustomTyper : MonoBehaviour
             words.Add(newWord);
         }
         outputStr = stringFromBank;
-        Debug.Log(String.Format("Output String: {0}",outputStr));
+        // Debug.Log(String.Format("Output String: {0} Len: {1}",outputStr, words.Count));
+        // Debug.Log(String.Format("Last Word: {0}", words[words.Count-1].IsFullyTyped()));
     }
 
     private void SetTextGUI(TextMeshProUGUI textArea, string str){
@@ -317,6 +353,7 @@ public class CustomTyper : MonoBehaviour
         On spacebar input, checks for premature presses.
     */
     void EnterSpacebar() {
+  
         // do nothing if no character typed
         if(charIndex == 0){
             return;
@@ -333,16 +370,29 @@ public class CustomTyper : MonoBehaviour
         // Next word, update indices
         wordIndex += 1;
         charIndex = 0;
-
+        
+      
     }
 
-    // TODO: Check whether or not the remaining words are 0
     // Checks if the current line is already finished, return true if done, false if not
     private bool AreWordsComplete() {
         // check length of the remaining line
         // no next word
         bool isThereNoNextWord = wordList.Count == (wordIndex + 1);
         bool isWordFullyTyped = wordList[wordIndex].IsFullyTyped();
+        
+        try {
+            // isWordFullyTyped = ;
+            Debug.Log(String.Format("WordListCount: {0} : {1}",wordList.Count, wordIndex+1));
+            Debug.Log(string.Format("ThereNext: {0} Word:*{1}* Index: {2} IsWord: {3}",isThereNoNextWord,wordList[wordIndex].Text, wordIndex, isWordFullyTyped));
+            for(int i = 0; i < wordList.Count; i++)
+            {
+                Debug.Log(String.Format("Word {0} : {1}", i, wordList[i].Text));
+            }
+
+        } catch (Exception e){
+            Debug.Log(e);
+        }
         return isThereNoNextWord && isWordFullyTyped;
     }
 
