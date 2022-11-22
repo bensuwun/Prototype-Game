@@ -433,13 +433,24 @@ public class CustomTyper : MonoBehaviour
     }
 
     private IEnumerator updateCombo() {
+        string text = "";
+        string textColor = "white";
         while (true) {
-            if (comboCount == 0) {
-                comboCounterText.text = "";
+            if (comboCount!= 0) {
+                text = "" + comboCount;
             }
-            else {
-                comboCounterText.text = "" + comboCount;
-            }
+            else text = "";
+
+            if (comboCount > 0) textColor = "white";
+            if (comboCount >= 10) textColor = "#00a0ff";
+            if (comboCount >= 20) textColor = "#24e100";
+            if (comboCount >= 30) textColor = "#ffe300";
+            if (comboCount >= 40) textColor = "#ff7f1c";
+            if (comboCount >= 50) textColor = "#ff3af2";
+
+            string formattedText = String.Format("<color={0}>{1}</color>", textColor, text);
+
+            comboCounterText.text = formattedText;
             yield return null;
         }
     }
