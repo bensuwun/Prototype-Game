@@ -7,13 +7,14 @@ using TMPro;
 
 public class CustomTyper : MonoBehaviour
 {
+    private static int LEVEL;
     // Current word output
     public TextMeshProUGUI wordOutput;
     public TextMeshProUGUI wordOutput2;
     public TextMeshProUGUI wordOutput3;
 
     // Current WPM
-    public TextMeshProUGUI currWPM;
+    public TextMeshProUGUI currWPMText;
 
     public WordBank wordBank = null;
     public StatsCalc statsCalc = null;
@@ -28,6 +29,9 @@ public class CustomTyper : MonoBehaviour
     private List<Word> wordList2 = new List<Word>();
     private List<Word> wordList3 = new List<Word>();
     private StringBuilder sb;
+
+    private double currWPM = 0d;
+    private double wpmThreshold = 0d;
 
     // Indexing current word and current char
     private int wordIndex = 0;
@@ -61,54 +65,42 @@ public class CustomTyper : MonoBehaviour
     }
 
     public void instantiateBattle(int level) {
-        switch(level) {
+        LEVEL = level;
+        float bossHP = 0f;
+        float playerHP = 100f;
+
+        switch(LEVEL) {
             case 1:
-                // sets the boss's max HP
-                boss.setMaxHP(100f);
-                // sets the player's max HP 
-                player.setMaxHP(100f);
-
-                // sets the words that are displayed
-                InitializeWordLists();
-
-                // gets the current time
-                statsCalc.getStart();
-
-                // show current WPM to 0
-                currWPM.text = "0";
+                bossHP = 100f;
+                wpmThreshold = 10d;
+                idleTimeLimit = 10f;
                 break;
             case 2:
-                boss.setMaxHP(250f);
-                player.setMaxHP(100f);
-
-                InitializeWordLists();
-
-                statsCalc.getStart();
-
-                currWPM.text = "0";
+                bossHP = 200f;
+                wpmThreshold = 20d;
+                idleTimeLimit = 6f;
                 break;
             case 3:
-                boss.setMaxHP(500f);
-                player.setMaxHP(100f);
-
-                InitializeWordLists();
-
-                statsCalc.getStart();
-
-                currWPM.text = "0";
+                bossHP = 300f;
+                wpmThreshold = 30d;
+                idleTimeLimit = 3f;
                 break;
             default:
-                boss.setMaxHP(100f);
-                player.setMaxHP(100f);
-                
-                InitializeWordLists();
-
-                statsCalc.getStart();
-
-                currWPM.text = "0";
                 break;
-
         }
+        // sets the boss's max HP
+        boss.setMaxHP(bossHP);
+        // sets the player's max HP 
+        player.setMaxHP(playerHP);
+
+        // sets the words that are displayed
+        InitializeWordLists();
+
+        // gets the current time
+        statsCalc.getStart();
+
+        // show current WPM to 0
+        currWPMText.text = "" + currWPM;
     }
 
     private void InitializeWordLists(){
@@ -293,7 +285,8 @@ public class CustomTyper : MonoBehaviour
             wordList[wordIndex].nTyped += 1;
             wordList[wordIndex].nCorrect += 1;
             numCorrectChars += 1;
-            boss.TakeDamage(.5f);
+
+            boss.TakeDamage(.5f, LEVEL, currWPM);
         }
 
         // Incorrect
@@ -381,7 +374,6 @@ public class CustomTyper : MonoBehaviour
 
     }
 
-    // TODO: Check whether or not the remaining words are 0
     // Checks if the current line is already finished, return true if done, false if not
     private bool AreWordsComplete() {
         // check length of the remaining line
@@ -394,7 +386,8 @@ public class CustomTyper : MonoBehaviour
     // sets the WPM
     private IEnumerator checkWPM() {
         while (true) {
-            currWPM.text = statsCalc.getCurrWPM(numCorrectChars, numSpace);
+            currWPM = statsCalc.getCurrWPM(numCorrectChars, numSpace);
+            currWPMText.text = "" + currWPM;
             yield return null;
         }
         
