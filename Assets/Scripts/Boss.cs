@@ -4,21 +4,15 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    public float maxHealth = 100;
+    public float maxHealth = 100f;
     public float currentHealth;
 
     public Healthbar_boss healthBar;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    public void setMaxHP(float maxHP) {
+        maxHealth = maxHP;
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
-    }
-
-    void Update()
-    {
-        
     }
 
     public void TakeDamage(float damage)

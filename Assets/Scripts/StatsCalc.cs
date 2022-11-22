@@ -20,7 +20,7 @@ public class StatsCalc : MonoBehaviour
         float currDiff = end - start;
         // removed numspace in the computation
         // double currWPM = Math.Floor(((numCorrectChars + numSpace) * (60 / currDiff) / 5));
-        double currWPM = Math.Floor(((numCorrectChars) * (60 / currDiff) / 5));
+        double currWPM = Math.Floor(((numCorrectChars + numSpace) * (60 / currDiff) / 5));
         return("" + currWPM);
     } 
     // calculates raw WPM (including mistakes)

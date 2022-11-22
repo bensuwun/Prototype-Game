@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float maxHealth = 100;
+    public float maxHealth = 100f;
     public float currentHealth;
 
     public HealthBar healthBar;
 
     bool isRunning = false;
 
-    void Start()
-    {
-        currentHealth = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
-    }
+    // void Start()
+    // {
+    //     currentHealth = maxHealth;
+    //     healthBar.SetMaxHealth(maxHealth);
+    // }
 
     void Update()
     {
@@ -26,6 +26,12 @@ public class Player : MonoBehaviour
         {
             TakeDamage(3);
         } 
+    }
+
+    public void setMaxHP(float maxHP) {
+        maxHealth = maxHP;
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     public void TakeDamage(float damage)

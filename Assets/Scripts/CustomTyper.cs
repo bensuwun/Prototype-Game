@@ -57,15 +57,60 @@ public class CustomTyper : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        // sets the words that are displayed
-        InitializeWordLists();
-
-        // gets the current time
-        statsCalc.getStart();
-
-        // show current WPM to 0
-        currWPM.text = "0";
+        instantiateBattle(1);
     }
+
+    public void instantiateBattle(int level) {
+        switch(level) {
+            case 1:
+                // sets the boss's max HP
+                boss.setMaxHP(100f);
+                // sets the player's max HP 
+                player.setMaxHP(100f);
+
+                // sets the words that are displayed
+                InitializeWordLists();
+
+                // gets the current time
+                statsCalc.getStart();
+
+                // show current WPM to 0
+                currWPM.text = "0";
+                break;
+            case 2:
+                boss.setMaxHP(250f);
+                player.setMaxHP(100f);
+
+                InitializeWordLists();
+
+                statsCalc.getStart();
+
+                currWPM.text = "0";
+                break;
+            case 3:
+                boss.setMaxHP(500f);
+                player.setMaxHP(100f);
+
+                InitializeWordLists();
+
+                statsCalc.getStart();
+
+                currWPM.text = "0";
+                break;
+            default:
+                boss.setMaxHP(100f);
+                player.setMaxHP(100f);
+                
+                InitializeWordLists();
+
+                statsCalc.getStart();
+
+                currWPM.text = "0";
+                break;
+
+        }
+    }
+
     private void InitializeWordLists(){
         // For initialization: Each list gets filled with words
         
