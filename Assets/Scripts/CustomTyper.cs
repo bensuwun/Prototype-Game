@@ -4,6 +4,7 @@ using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class CustomTyper : MonoBehaviour
 {
@@ -174,40 +175,52 @@ public class CustomTyper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        string inputString = Input.inputString;
-        
-        if (inputString.Length == 1) {
-            // wordAnimators[0].SetTrigger("NextLineTrigger");
-            lastIdleTime = Time.time;
-            switch (CheckInput(inputString[0])) {
-                // Character - can further be correct, incorrect, or excess
-                case 0:
-                    EnterChar(inputString);
-                    break;
-                // Spacebar
-                case 1:
-                    EnterSpacebar();
-                    break;
-                
-                // Backspace
-                case 2:
-                    EnterBackspace();
-                    break;
-                default:
-                    break;
+        // print(boss.isBossDead());
+        // print(player.isPlayerDead());
+        if(boss.isBossDead()) {
+            print("THE BOSS IS DEAD");
+            SceneManager.LoadScene("Main Menu");
+        }
+        else if (player.isPlayerDead()) {
+            print("YOU DIED");
+            SceneManager.LoadScene("Main Menu");
+        }
+        else {
+            string inputString = Input.inputString;
+            
+            if (inputString.Length == 1) {
+                // wordAnimators[0].SetTrigger("NextLineTrigger");
+                lastIdleTime = Time.time;
+                switch (CheckInput(inputString[0])) {
+                    // Character - can further be correct, incorrect, or excess
+                    case 0:
+                        EnterChar(inputString);
+                        break;
+                    // Spacebar
+                    case 1:
+                        EnterSpacebar();
+                        break;
+                    
+                    // Backspace
+                    case 2:
+                        EnterBackspace();
+                        break;
+                    default:
+                        break;
 
-            }
+                }
 
-            // Check if the current words on the screen are already finished and set new words
-            if (AreWordsComplete()) {
-                SetCurrentWords();
-                ResetIndeces();
-            }
+                // Check if the current words on the screen are already finished and set new words
+                if (AreWordsComplete()) {
+                    SetCurrentWords();
+                    ResetIndeces();
+                }
 
-            // Display current WPM on screen
-            StartCoroutine(checkWPM());
-            StartCoroutine(checkIdle());
-        } 
+                // Display current WPM on screen
+                StartCoroutine(checkWPM());
+                StartCoroutine(checkIdle());
+            } 
+        }
     }
 
     /**

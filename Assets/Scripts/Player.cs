@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if (currentHealth != 0)
+        if (currentHealth > 0)
             currentHealth -= damage;
 
         healthBar.SetHealth(currentHealth);
@@ -62,5 +62,12 @@ public class Player : MonoBehaviour
             TakeDamage(0.0007f);  //to be adjusted
             yield return null;
         }
+    }
+
+    public bool isPlayerDead() {
+        if (currentHealth <= 0) {
+            return true;
+        }
+        return false;
     }
 }

@@ -6,7 +6,6 @@ public class Boss : MonoBehaviour
 {
     public float maxHealth = 100f;
     public float currentHealth;
-    public bool isBossDead = false;
 
     public Healthbar_boss healthBar;
 
@@ -30,8 +29,13 @@ public class Boss : MonoBehaviour
             print("WPM not enough!");
         }
 
-        if (currentHealth == 0) {
-            isBossDead = true;
+        
+    }
+
+    public bool isBossDead() {
+        if (currentHealth <= 0) {
+            return true;
         }
+        return false;
     }
 }
