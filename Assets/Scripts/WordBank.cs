@@ -10,6 +10,7 @@ public class WordBank : MonoBehaviour
     private List<string> originalWords = new List<string>();
     private List<string> workingWords = new List<string>();
 
+    private int wordCount = 6;
     // reads file before the game starts
     private void Awake() {
         ReadFile();
@@ -48,7 +49,6 @@ public class WordBank : MonoBehaviour
 
     // gets wordCount words from the word bank and returns it as a string split by " "
     public string GetWords() {
-        int wordCount = 6;
         string newWord = string.Empty;
         string newWords = string.Empty;
 
@@ -67,6 +67,29 @@ public class WordBank : MonoBehaviour
 
         }
 
+        return newWords;
+    }
+
+    public string GetLongWords(){
+        string newWord = string.Empty;
+        string newWords = string.Empty;
+        int wordLengthLimit = 4;
+        var filteredList = workingWords.Where(x => x.Length >= wordLengthLimit);
+        for (int i = 0; i < wordCount; i++) {
+            if (filteredList.Count() - wordCount <= 0) {
+                // working words is empty
+                workingWords.AddRange(originalWords);
+                filteredList = workingWords.Where(x => x.Length >= wordLengthLimit);
+            }
+            
+            if (filteredList.Count() != 0) {
+                newWord = filteredList.Last();
+                workingWords.Remove(newWord);
+                newWords += newWord;
+                newWords += " ";
+            } 
+
+        }
         return newWords;
     }
 }

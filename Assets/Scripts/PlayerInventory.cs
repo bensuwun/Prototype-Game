@@ -9,5 +9,5 @@ public class PlayerInventory : MonoBehaviour
     public bool shortSightedFlag { get; set;}
     public bool longWordsFlag { get; set;}
     public bool armsSpaghettiFlag { get; set;}
-
+    public bool clearDebuffFlag {get; set;}
 }

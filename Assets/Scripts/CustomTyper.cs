@@ -24,7 +24,7 @@ public class CustomTyper : MonoBehaviour
     public Player player = null;
     public Boss boss = null;
     public WordAnimator wordAnimator = null;
-
+    private PlayerInventory inventory = null;
     private string sourceString = string.Empty;
     private string sourceString2 = string.Empty;
     private string sourceString3 = string.Empty; 
@@ -188,7 +188,7 @@ public class CustomTyper : MonoBehaviour
             SetTextGUI(wordOutput3, output);
             sourceString3 = output;
         }
-        Debug.Log(String.Format("Mash String: {0} Len: {1}",output, words.Count));
+        Debug.Log(String.Format("Modified String: {0} Len: {1}",output, words.Count));
     }
 
     // Parse source string to list of words
@@ -445,19 +445,6 @@ public class CustomTyper : MonoBehaviour
         // no next word
         bool isThereNoNextWord = wordList.Count == (wordIndex + 1);
         bool isWordFullyTyped = wordList[wordIndex].IsFullyTyped();
-        
-        try {
-            // isWordFullyTyped = ;
-            Debug.Log(String.Format("WordListCount: {0} : {1}",wordList.Count, wordIndex+1));
-            Debug.Log(string.Format("ThereNext: {0} Word:*{1}* Index: {2} IsWord: {3}",isThereNoNextWord,wordList[wordIndex].Text, wordIndex, isWordFullyTyped));
-            for(int i = 0; i < wordList.Count; i++)
-            {
-                Debug.Log(String.Format("Word {0} : {1}", i, wordList[i].Text));
-            }
-
-        } catch (Exception e){
-            Debug.Log(e);
-        }
         return isThereNoNextWord && isWordFullyTyped;
     }
 
@@ -500,6 +487,10 @@ public class CustomTyper : MonoBehaviour
             if (comboCount >= 30) textColor = "#ffe300";
             if (comboCount >= 40) textColor = "#ff7f1c";
             if (comboCount >= 50) textColor = "#ff3af2";
+
+            // if (comboCount % 35 == 0) inventory.clearDebuffFlag = true;
+            // if (comboCount % 50 == 0) inventory.hpRegenFlag = true;
+            // if (comboCount % 60 == 0) inventory.buttonMashFlag = true;
 
             string formattedText = String.Format("<color={0}>{1}</color>", textColor, text);
 
