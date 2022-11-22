@@ -286,7 +286,7 @@ public class CustomTyper : MonoBehaviour
             wordList[wordIndex].nCorrect += 1;
             numCorrectChars += 1;
 
-            boss.TakeDamage(.5f, LEVEL, currWPM);
+            boss.TakeDamage(.5f, wpmThreshold, currWPM);
         }
 
         // Incorrect

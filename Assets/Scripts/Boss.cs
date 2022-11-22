@@ -6,6 +6,7 @@ public class Boss : MonoBehaviour
 {
     public float maxHealth = 100f;
     public float currentHealth;
+    public bool isBossDead = false;
 
     public Healthbar_boss healthBar;
 
@@ -15,27 +16,10 @@ public class Boss : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
     }
 
-    public void TakeDamage(float damage, int level, double wpm)
+    public void TakeDamage(float damage, double targetWPM, double wpm)
     {
-        double targetWPM = 0d;
-
-        switch(level) {
-            case 1:
-                targetWPM = 10d;
-                break;
-            case 2:
-                targetWPM = 20d;
-                break;
-            case 3:
-                targetWPM = 30d;
-                break;
-            default:
-                targetWPM = 0d;
-                break;
-        }
-
         if (wpm >= targetWPM) {
-            if (currentHealth != 0) {
+            if (currentHealth > 0) {
                 currentHealth -= damage;
                 print("Damage was dealt to boss");
                 healthBar.SetHealth(currentHealth);
@@ -44,6 +28,10 @@ public class Boss : MonoBehaviour
         }
         else {
             print("WPM not enough!");
+        }
+
+        if (currentHealth == 0) {
+            isBossDead = true;
         }
     }
 }

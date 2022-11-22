@@ -912,6 +912,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  isBossDead: 0
   healthBar: {fileID: 1278397490}
 --- !u!4 &915062713
 Transform:
@@ -960,7 +961,7 @@ MonoBehaviour:
   wordOutput: {fileID: 2100547058}
   wordOutput2: {fileID: 1806448045}
   wordOutput3: {fileID: 487441175}
-  currWPM: {fileID: 1976949886}
+  currWPMText: {fileID: 1976949886}
   wordBank: {fileID: 1363960120}
   statsCalc: {fileID: 4120032381447231500}
   player: {fileID: 1997416438}
