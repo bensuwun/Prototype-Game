@@ -220,6 +220,7 @@ public class CustomTyper : MonoBehaviour
         // print(player.isPlayerDead());
         if(boss.isBossDead()) {
             print("THE BOSS IS DEAD");
+            print("WPM: " + currWPM);
             SceneManager.LoadScene("Main Menu");
         }
         else if (player.isPlayerDead()) {
@@ -475,6 +476,7 @@ public class CustomTyper : MonoBehaviour
         while (true) {
             if (Time.time - lastIdleTime > idleTimeLimit) {
                 player.TakeDamage(10);
+                comboCount = 0;
                 lastIdleTime = Time.time;
             }
         
@@ -502,6 +504,11 @@ public class CustomTyper : MonoBehaviour
             string formattedText = String.Format("<color={0}>{1}</color>", textColor, text);
 
             comboCounterText.text = formattedText;
+            
+            float fontSize = 60f;
+            float perHitFontSize = 0.7f;
+
+            comboCounterText.fontSize = fontSize + perHitFontSize * comboCount;
             yield return null;
         }
     }
