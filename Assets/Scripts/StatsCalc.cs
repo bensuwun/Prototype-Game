@@ -15,13 +15,13 @@ public class StatsCalc : MonoBehaviour
         end = Time.time;
     }
     // calculates the current WPM
-    public string getCurrWPM(int numCorrectChars, int numSpace) {
+    public double getCurrWPM(int numCorrectChars, int numSpace) {
         getEnd();
         float currDiff = end - start;
         // removed numspace in the computation
         // double currWPM = Math.Floor(((numCorrectChars + numSpace) * (60 / currDiff) / 5));
-        double currWPM = Math.Floor(((numCorrectChars) * (60 / currDiff) / 5));
-        return("" + currWPM);
+        double currWPM = Math.Floor(((numCorrectChars + numSpace) * (60 / currDiff) / 5));
+        return(currWPM);
     } 
     // calculates raw WPM (including mistakes)
     public string getRawWPM(int numCharsTyped, int numSpace) {

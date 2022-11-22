@@ -4,16 +4,20 @@ using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class CustomTyper : MonoBehaviour
 {
+    private static int LEVEL;
     // Current word output
     public TextMeshProUGUI wordOutput;
     public TextMeshProUGUI wordOutput2;
     public TextMeshProUGUI wordOutput3;
 
     // Current WPM
-    public TextMeshProUGUI currWPM;
+    public TextMeshProUGUI currWPMText;
+
+    public TextMeshProUGUI comboCounterText;
 
     public WordBank wordBank = null;
     public StatsCalc statsCalc = null;
@@ -28,6 +32,9 @@ public class CustomTyper : MonoBehaviour
     private List<Word> wordList2 = new List<Word>();
     private List<Word> wordList3 = new List<Word>();
     private StringBuilder sb;
+
+    private double currWPM = 0d;
+    private double wpmThreshold = 0d;
 
     // Indexing current word and current char
     private int wordIndex = 0;
@@ -46,6 +53,8 @@ public class CustomTyper : MonoBehaviour
     private float lastIdleTime = 0f;
     private float idleTimeLimit = 5f;
 
+    private int comboCount = 0;
+
 
     // Enums
     private enum Enums {
@@ -57,6 +66,38 @@ public class CustomTyper : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
+        instantiateBattle(1);
+    }
+
+    public void instantiateBattle(int level) {
+        LEVEL = level;
+        float bossHP = 0f;
+        float playerHP = 100f;
+
+        switch(LEVEL) {
+            case 1:
+                bossHP = 100f;
+                wpmThreshold = 10d;
+                idleTimeLimit = 10f;
+                break;
+            case 2:
+                bossHP = 200f;
+                wpmThreshold = 20d;
+                idleTimeLimit = 6f;
+                break;
+            case 3:
+                bossHP = 300f;
+                wpmThreshold = 30d;
+                idleTimeLimit = 3f;
+                break;
+            default:
+                break;
+        }
+        // sets the boss's max HP
+        boss.setMaxHP(bossHP);
+        // sets the player's max HP 
+        player.setMaxHP(playerHP);
+
         // sets the words that are displayed
         InitializeWordLists();
 
@@ -64,8 +105,10 @@ public class CustomTyper : MonoBehaviour
         statsCalc.getStart();
 
         // show current WPM to 0
-        currWPM.text = "0";
+        currWPMText.text = "" + currWPM;
+        comboCounterText.text = "";
     }
+
     private void InitializeWordLists(){
         // For initialization: Each list gets filled with words
         
@@ -173,40 +216,53 @@ public class CustomTyper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        string inputString = Input.inputString;
-        
-        if (inputString.Length == 1) {
-            // wordAnimators[0].SetTrigger("NextLineTrigger");
-            lastIdleTime = Time.time;
-            switch (CheckInput(inputString[0])) {
-                // Character - can further be correct, incorrect, or excess
-                case 0:
-                    EnterChar(inputString);
-                    break;
-                // Spacebar
-                case 1:
-                    EnterSpacebar();
-                    break;
-                
-                // Backspace
-                case 2:
-                    EnterBackspace();
-                    break;
-                default:
-                    break;
+        // print(boss.isBossDead());
+        // print(player.isPlayerDead());
+        if(boss.isBossDead()) {
+            print("THE BOSS IS DEAD");
+            SceneManager.LoadScene("Main Menu");
+        }
+        else if (player.isPlayerDead()) {
+            print("YOU DIED");
+            SceneManager.LoadScene("Main Menu");
+        }
+        else {
+            string inputString = Input.inputString;
+            
+            if (inputString.Length == 1) {
+                // wordAnimators[0].SetTrigger("NextLineTrigger");
+                lastIdleTime = Time.time;
+                switch (CheckInput(inputString[0])) {
+                    // Character - can further be correct, incorrect, or excess
+                    case 0:
+                        EnterChar(inputString);
+                        break;
+                    // Spacebar
+                    case 1:
+                        EnterSpacebar();
+                        break;
+                    
+                    // Backspace
+                    case 2:
+                        EnterBackspace();
+                        break;
+                    default:
+                        break;
 
-            }
+                }
 
-            // Check if the current words on the screen are already finished and set new words
-            if (AreWordsComplete()) {
-                SetCurrentWords();
-                ResetIndeces();
-            }
+                // Check if the current words on the screen are already finished and set new words
+                if (AreWordsComplete()) {
+                    SetCurrentWords();
+                    ResetIndeces();
+                }
 
-            // Display current WPM on screen
-            StartCoroutine(checkWPM());
-            StartCoroutine(checkIdle());
-        } 
+                // Display current WPM on screen
+                StartCoroutine(checkWPM());
+                StartCoroutine(checkIdle());
+                StartCoroutine(updateCombo());
+            } 
+        }
     }
 
     /**
@@ -265,6 +321,7 @@ public class CustomTyper : MonoBehaviour
             // Update charIndex
             charIndex += 1;
             player.TakeDamage(1);
+            comboCount = 0;
         }
 
         // Check if input char is correct
@@ -284,7 +341,10 @@ public class CustomTyper : MonoBehaviour
             wordList[wordIndex].nTyped += 1;
             wordList[wordIndex].nCorrect += 1;
             numCorrectChars += 1;
-            boss.TakeDamage(.5f);
+
+            boss.TakeDamage(.5f, wpmThreshold, currWPM, comboCount);
+
+            comboCount += 1;
         }
 
         // Incorrect
@@ -303,6 +363,7 @@ public class CustomTyper : MonoBehaviour
             charIndex += 1;
             wordList[wordIndex].nTyped += 1;
             player.TakeDamage(1);
+            comboCount = 0;
         }
 
         numCharsTyped += 1;
@@ -347,6 +408,8 @@ public class CustomTyper : MonoBehaviour
             // Update word properties
             charIndex -= 1;  
         }
+
+        comboCount = 0;
     }
 
     /**
@@ -360,6 +423,7 @@ public class CustomTyper : MonoBehaviour
         }
         // Check for premature spacebar (word has not finished yet)
         if (!wordList[wordIndex].IsFullyTyped()) {
+            comboCount = 0;
             caretPosition += wordList[wordIndex].GetRemainingChars() + 1; /// + 1 for whitespace
         }
         // Move caret only one (user finished the word)
@@ -399,7 +463,8 @@ public class CustomTyper : MonoBehaviour
     // sets the WPM
     private IEnumerator checkWPM() {
         while (true) {
-            currWPM.text = statsCalc.getCurrWPM(numCorrectChars, numSpace);
+            currWPM = statsCalc.getCurrWPM(numCorrectChars, numSpace);
+            currWPMText.text = "" + currWPM;
             yield return null;
         }
         
@@ -416,5 +481,17 @@ public class CustomTyper : MonoBehaviour
             yield return null;
         }
         
+    }
+
+    private IEnumerator updateCombo() {
+        while (true) {
+            if (comboCount == 0) {
+                comboCounterText.text = "";
+            }
+            else {
+                comboCounterText.text = "" + comboCount;
+            }
+            yield return null;
+        }
     }
 }

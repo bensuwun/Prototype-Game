@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float maxHealth = 100;
+    public float maxHealth = 100f;
     public float currentHealth;
 
     public HealthBar healthBar;
 
     bool isRunning = false;
 
-    void Start()
-    {
-        currentHealth = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
-    }
+    // void Start()
+    // {
+    //     currentHealth = maxHealth;
+    //     healthBar.SetMaxHealth(maxHealth);
+    // }
 
     void Update()
     {
@@ -28,9 +28,15 @@ public class Player : MonoBehaviour
         } 
     }
 
+    public void setMaxHP(float maxHP) {
+        maxHealth = maxHP;
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+    }
+
     public void TakeDamage(float damage)
     {
-        if (currentHealth != 0)
+        if (currentHealth > 0)
             currentHealth -= damage;
 
         healthBar.SetHealth(currentHealth);
@@ -56,5 +62,12 @@ public class Player : MonoBehaviour
             TakeDamage(0.0007f);  //to be adjusted
             yield return null;
         }
+    }
+
+    public bool isPlayerDead() {
+        if (currentHealth <= 0) {
+            return true;
+        }
+        return false;
     }
 }
