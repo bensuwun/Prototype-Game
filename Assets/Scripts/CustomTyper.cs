@@ -17,6 +17,8 @@ public class CustomTyper : MonoBehaviour
     // Current WPM
     public TextMeshProUGUI currWPMText;
 
+    public TextMeshProUGUI comboCounterText;
+
     public WordBank wordBank = null;
     public StatsCalc statsCalc = null;
     public Player player = null;
@@ -50,6 +52,8 @@ public class CustomTyper : MonoBehaviour
 
     private float lastIdleTime = 0f;
     private float idleTimeLimit = 5f;
+
+    private int comboCount = 0;
 
 
     // Enums
@@ -102,6 +106,7 @@ public class CustomTyper : MonoBehaviour
 
         // show current WPM to 0
         currWPMText.text = "" + currWPM;
+        comboCounterText.text = "";
     }
 
     private void InitializeWordLists(){
@@ -219,6 +224,7 @@ public class CustomTyper : MonoBehaviour
                 // Display current WPM on screen
                 StartCoroutine(checkWPM());
                 StartCoroutine(checkIdle());
+                StartCoroutine(updateCombo());
             } 
         }
     }
@@ -279,6 +285,7 @@ public class CustomTyper : MonoBehaviour
             // Update charIndex
             charIndex += 1;
             player.TakeDamage(1);
+            comboCount = 0;
         }
 
         // Check if input char is correct
@@ -299,7 +306,9 @@ public class CustomTyper : MonoBehaviour
             wordList[wordIndex].nCorrect += 1;
             numCorrectChars += 1;
 
-            boss.TakeDamage(.5f, wpmThreshold, currWPM);
+            boss.TakeDamage(.5f, wpmThreshold, currWPM, comboCount);
+
+            comboCount += 1;
         }
 
         // Incorrect
@@ -318,6 +327,7 @@ public class CustomTyper : MonoBehaviour
             charIndex += 1;
             wordList[wordIndex].nTyped += 1;
             player.TakeDamage(1);
+            comboCount = 0;
         }
 
         numCharsTyped += 1;
@@ -362,6 +372,8 @@ public class CustomTyper : MonoBehaviour
             // Update word properties
             charIndex -= 1;  
         }
+
+        comboCount = 0;
     }
 
     /**
@@ -374,6 +386,7 @@ public class CustomTyper : MonoBehaviour
         }
         // Check for premature spacebar (word has not finished yet)
         if (!wordList[wordIndex].IsFullyTyped()) {
+            comboCount = 0;
             caretPosition += wordList[wordIndex].GetRemainingChars() + 1; /// + 1 for whitespace
         }
         // Move caret only one (user finished the word)
@@ -417,5 +430,17 @@ public class CustomTyper : MonoBehaviour
             yield return null;
         }
         
+    }
+
+    private IEnumerator updateCombo() {
+        while (true) {
+            if (comboCount == 0) {
+                comboCounterText.text = "";
+            }
+            else {
+                comboCounterText.text = "" + comboCount;
+            }
+            yield return null;
+        }
     }
 }

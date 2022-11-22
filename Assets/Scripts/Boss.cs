@@ -15,11 +15,14 @@ public class Boss : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
     }
 
-    public void TakeDamage(float damage, double targetWPM, double wpm)
+    public void TakeDamage(float damage, double targetWPM, double wpm, int comboCount)
     {
         if (wpm >= targetWPM) {
             if (currentHealth > 0) {
-                currentHealth -= damage;
+                if (comboCount > 0) {
+                    currentHealth -= (float)(damage * 0.05 * comboCount);
+                }   
+                else currentHealth -= damage;
                 print("Damage was dealt to boss");
                 healthBar.SetHealth(currentHealth);
             }
