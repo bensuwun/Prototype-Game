@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 public class Modifiers : MonoBehaviour
 {
@@ -12,7 +13,10 @@ public class Modifiers : MonoBehaviour
     private List<Word> previousWords = null;
     private bool testing = true;
     public WordAnimator wordAnimator = null;
-    
+    public List<Image> modifiers; 
+    private Color inactiveColor = new Color(0.5f,0.5f,0.5f,1f);
+    private Color activeColor = new Color(1f,1f,1f,1f);
+    private int NoneMashLong = 0;
 
     // Debuff variables (Ben)
     public List<TextMeshProUGUI> wordOutputs;
@@ -28,6 +32,11 @@ public class Modifiers : MonoBehaviour
     private bool endDebuffRunning = false;
     private bool hasTextChanged = false;
 
+    private enum Buffs{
+        HPRegen = 0,
+        ButtonMash = 1,
+        ClearDebuff = 2,
+    }
     private enum Debuffs {
         ShortSighted = 0,
         LongWords = 1,
@@ -37,7 +46,10 @@ public class Modifiers : MonoBehaviour
     void Start()
     {
         inventory = typer.GetInventory();
-
+        clearDebuffs();
+        inventory.buttonMashFlag = false;
+        inventory.clearDebuffFlag = false;
+        inventory.hpRegenFlag = false;
         // Begin countdown for debuff
         StartCoroutine(ObtainDebuffAfterTime(debuffCooldownDuration));
 
@@ -47,6 +59,9 @@ public class Modifiers : MonoBehaviour
             wordOutputs[1].GetComponent<TMP_Text>(),
             wordOutputs[2].GetComponent<TMP_Text>()
         };
+
+        // Icon Lightup
+        StartCoroutine(CheckModifierStatus());
     }
 
     void onEnable() {
@@ -63,7 +78,7 @@ public class Modifiers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.LeftAlt)){
+        if(Input.GetKeyDown(KeyCode.Alpha1)){
             healthRegen();
         }
 
@@ -124,7 +139,7 @@ public class Modifiers : MonoBehaviour
             // Debug.Log(string.Format("Len: {0}", newWords.Count));
             inventory.buttonMashFlag = false;
         }
-
+        NoneMashLong = 1;
     }
 
     Word createMashWord(string mono, int length){
@@ -155,13 +170,14 @@ public class Modifiers : MonoBehaviour
         }
         typer.SetWordListWords(newWords,2);
         wordAnimator.wordNextLine(1);
+        NoneMashLong = 2;
         // Debug.Log(string.Format("Len: {0}", newWords.Count));
     }
 
     // ================ DEBUFFS ====================
 
     void revertLongWords(){
-        if(previousWords != null){
+        if(previousWords != null && NoneMashLong == 2){
             typer.SetWordListWords(previousWords, 2);
         }
     }
@@ -282,5 +298,17 @@ public class Modifiers : MonoBehaviour
         // Pick random debuff after certain amount of time
         // TODO: Randomize value given range
         StartCoroutine(ObtainDebuffAfterTime(debuffCooldownDuration));
+    }
+
+    IEnumerator CheckModifierStatus(){
+
+        modifiers[(int)Buffs.HPRegen].color = (inventory.hpRegenFlag) ? activeColor : inactiveColor;
+        modifiers[(int)Buffs.ButtonMash].color = (inventory.buttonMashFlag) ? activeColor : inactiveColor;
+        modifiers[(int)Buffs.ClearDebuff].color = (inventory.clearDebuffFlag) ? activeColor : inactiveColor;
+        modifiers[(int)Debuffs.ShortSighted + 3].color = (inventory.shortSightedFlag) ? activeColor : inactiveColor;
+        modifiers[(int)Debuffs.LongWords + 3].color = (inventory.longWordsFlag) ? activeColor : inactiveColor;
+        modifiers[(int)Debuffs.ArmsSpaghetti + 3].color = (inventory.armsSpaghettiFlag) ? activeColor : inactiveColor;
+
+        yield return new WaitForSeconds(armsSpaghettiDuration);
     }
 }
