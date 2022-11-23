@@ -71,6 +71,7 @@ public class CustomTyper : MonoBehaviour
     }
 
     public void instantiateBattle(int level) {
+        inventory = (PlayerInventory) ScriptableObject.CreateInstance(className: "PlayerInventory");
         LEVEL = level;
         float bossHP = 0f;
         float playerHP = 100f;
@@ -264,6 +265,7 @@ public class CustomTyper : MonoBehaviour
                 StartCoroutine(checkWPM());
                 StartCoroutine(checkIdle());
                 StartCoroutine(updateCombo());
+                StartCoroutine(obtainDebuff());
             } 
         }
     }
@@ -450,6 +452,10 @@ public class CustomTyper : MonoBehaviour
         return isThereNoNextWord && isWordFullyTyped;
     }
 
+    public PlayerInventory GetInventory(){
+        return inventory;
+    }
+
     // sets the WPM
     private IEnumerator checkWPM() {
         while (true) {
@@ -495,9 +501,9 @@ public class CustomTyper : MonoBehaviour
             if (comboCount >= 40) textColor = "#ff7f1c";
             if (comboCount >= 50) textColor = "#ff3af2";
 
-            // if (comboCount % 35 == 0) inventory.clearDebuffFlag = true;
-            // if (comboCount % 50 == 0) inventory.hpRegenFlag = true;
-            // if (comboCount % 60 == 0) inventory.buttonMashFlag = true;
+            if (comboCount % 35 == 0) inventory.clearDebuffFlag = true;
+            if (comboCount % 50 == 0) inventory.hpRegenFlag = true;
+            if (comboCount % 60 == 0) inventory.buttonMashFlag = true;
 
             string formattedText = String.Format("<color={0}>{1}</color>", textColor, text);
             string formattedComboText = String.Format("<color={0}>{1}</color>", textColor, showComboText);
@@ -510,6 +516,24 @@ public class CustomTyper : MonoBehaviour
 
             comboCounterText.fontSize = fontSize + perHitFontSize * comboCount;
             yield return null;
+        }
+    }
+
+    private IEnumerator obtainDebuff(){
+        yield return new WaitForSeconds(5);
+        while(true){
+            int rngNum = UnityEngine.Random.Range(1,4);
+            if (rngNum == 1){
+                inventory.shortSightedFlag = true;
+                Debug.Log("Debuff Sight");
+            }else if(rngNum == 2){
+                inventory.armsSpaghettiFlag = true;
+                Debug.Log("Debuff Spage");
+            }else if(rngNum == 3){
+                inventory.longWordsFlag = true;
+                Debug.Log("Debuff Long ");
+            }
+            yield return new WaitForSeconds(5);
         }
     }
 }
