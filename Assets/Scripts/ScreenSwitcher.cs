@@ -10,4 +10,10 @@ public class ScreenSwitcher : MonoBehaviour
     {
         SceneManager.LoadScene(index);
     }
+
+    public void ExitGame ()
+    {
+        Debug.Log("EXIT");
+        Application.Quit();
+    }
 }
