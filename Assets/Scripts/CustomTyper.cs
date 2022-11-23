@@ -167,6 +167,18 @@ public class CustomTyper : MonoBehaviour
         else return null;
     }
 
+    public List<TMP_Text> GetTMPText_Components() {
+        List<TMP_Text> textComponents = new List<TMP_Text>();
+        textComponents.AddRange(new List<TMP_Text>
+        {
+            wordOutput.GetComponent<TMP_Text>(),
+            //wordOutput2.GetComponent<TMP_Text>(),
+            //wordOutput3.GetComponent<TMP_Text>()
+        });
+
+        return textComponents;
+    }
+
     public void SetWordListWords(List<Word> words ,int number){
         string output = null;
         if(number == 1)

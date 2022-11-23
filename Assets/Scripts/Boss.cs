@@ -31,8 +31,6 @@ public class Boss : MonoBehaviour
         else {
             print("WPM not enough!");
         }
-
-        
     }
 
     public bool isBossDead() {

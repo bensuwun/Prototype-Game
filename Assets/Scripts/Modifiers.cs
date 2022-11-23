@@ -16,10 +16,19 @@ public class Modifiers : MonoBehaviour
     {
         inventory = typer.GetInventory();
     }
+
+    // Debuff variables (Ben)
+    public List<TextMeshProUGUI> wordOutputs;
+    private float wiggleHeight = 0.5f;
+    private float wiggleSpeed = 15f;
+    private float debuffCooldownDuration = 10f;
+    public bool executingDebuff = false;
+    private string lastDebuff = "";
+    
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1)){
+        if(Input.GetKeyDown(KeyCode.LeftAlt)){
             healthRegen();
         }
 
@@ -31,18 +40,20 @@ public class Modifiers : MonoBehaviour
             clearDebuffs();
         }
 
-        if(inventory.longWordsFlag) extraLongWords();
-        if(inventory.armsSpaghettiFlag){
-             Debug.Log("Spaghetting");
-             inventory.armsSpaghettiFlag = false;
+        if(Input.GetKeyDown(KeyCode.RightArrow)){
+            inventory.longWordsFlag = true;
+            extraLongWords();
         }
-        if(inventory.shortSightedFlag) {
-            Debug.Log("Blinding");
-            inventory.shortSightedFlag = false;
+        
+        if (inventory.armsSpaghettiFlag) {
+            inventory.armsSpaghettiFlag = true;
+            ArmsSpaghetti();
         }
 
+        StartCoroutine(PickDebuffAfterTime(debuffCooldownDuration));
     }
 
+    // ================ BUFFS ======================
     void healthRegen(){
         if(inventory.hpRegenFlag || testing){ // check if player has hp regen buff
             // int n_wpm = Mathf.FloorToInt((float)0.75 * CombineNumber(wpm.GetParsedText().ToIntArray()));
@@ -102,9 +113,58 @@ public class Modifiers : MonoBehaviour
 
     }
 
+    // ================ DEBUFFS ====================
+
     void revertLongWords(){
         if(previousWords != null){
             typer.SetWordListWords(previousWords, 2);
         }
+    }
+    
+    void ArmsSpaghetti() {
+        // List<TMP_Text> textComponents = typer.GetTMPText_Components();
+
+        foreach (TMP_Text wordOutput in wordOutputs) {
+            var textComponent = wordOutput.GetComponent<TMP_Text>();
+            var textInfo = textComponent.textInfo;  // Info about text 
+
+            for (int i = 0; i < textInfo.characterCount; i++) {
+                var charInfo = textInfo.characterInfo[i];
+                
+                // Only do visible characters (ignore rich text)
+                if (!charInfo.isVisible) {
+                    continue;
+                }
+
+                var verts = textInfo.meshInfo[charInfo.materialReferenceIndex].vertices;
+
+                // Iterate over meshInfo.vertices (draft copy)
+                for (int j = 0; j < 4; j++) {
+                    var orig = verts[charInfo.vertexIndex + j];
+                    verts[charInfo.vertexIndex + j] = orig + new Vector3(0, Mathf.Sin(Time.time * wiggleSpeed + orig.x * 0.025f) * wiggleHeight, 0);
+                }
+            }
+            // Iterate over meshInfo.mesh.vertices (real copy)
+            for (int i = 0; i < textInfo.meshInfo.Length; i++) {
+                var meshInfo = textInfo.meshInfo[i];
+                meshInfo.mesh.vertices = meshInfo.vertices;
+                textComponent.UpdateGeometry(meshInfo.mesh, i);
+            }
+        }
+    }
+
+    // Pick a random debuff every [n, m] seconds
+    IEnumerator PickDebuffAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        // TODO: Pick a random debuff (Ben)
+        inventory.armsSpaghettiFlag = true;
+
+        // TODO: Set duration of cooldown before next debuff (Ben)
+
+        // TODO: Set duration of spaghetti and shortsighted debuffs (Ben)
+        
+        
     }
 }
