@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventory : MonoBehaviour
+public class PlayerInventory : ScriptableObject
 {
     public bool hpRegenFlag { get; set;}
     public bool buttonMashFlag { get; set;}
@@ -11,3 +11,4 @@ public class PlayerInventory : MonoBehaviour
     public bool armsSpaghettiFlag { get; set;}
     public bool clearDebuffFlag {get; set;}
 }
+

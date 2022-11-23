@@ -7,30 +7,40 @@ public class Modifiers : MonoBehaviour
     public Player player = null;
     public TextMeshProUGUI wpm = null;
     public CustomTyper typer = null;
-    public PlayerInventory inventory = null;
+    private PlayerInventory inventory = null;
     public WordBank wordBank = null;
     private List<Word> previousWords = null;
     private bool testing = true;
+    public WordAnimator wordAnimator = null;
+    void Start()
+    {
+        inventory = typer.GetInventory();
+    }
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.LeftAlt)){
+        if(Input.GetKeyDown(KeyCode.Alpha1)){
             healthRegen();
         }
 
-        if(Input.GetKeyDown(KeyCode.LeftControl)){
+        if(Input.GetKeyDown(KeyCode.Alpha2)){
             buttonMash();
         }
 
-        if(Input.GetKeyDown(KeyCode.Tab)){
+        if(Input.GetKeyDown(KeyCode.Alpha3)){
             clearDebuffs();
         }
 
-        if(Input.GetKeyDown(KeyCode.RightArrow)){
-            inventory.longWordsFlag = true;
-            extraLongWords();
+        if(inventory.longWordsFlag) extraLongWords();
+        if(inventory.armsSpaghettiFlag){
+             Debug.Log("Spaghetting");
+             inventory.armsSpaghettiFlag = false;
         }
-        
+        if(inventory.shortSightedFlag) {
+            Debug.Log("Blinding");
+            inventory.shortSightedFlag = false;
+        }
+
     }
 
     void healthRegen(){
@@ -76,20 +86,20 @@ public class Modifiers : MonoBehaviour
     }
 
     void extraLongWords(){
-        if(inventory.longWordsFlag){
-            // Word newWord = null;
-            previousWords = typer.getWordList(2);
-            string wordSoup = "";
-            List<Word> newWords = new List<Word>();
-            wordSoup = wordBank.GetLongWords();
-            foreach(string str in wordSoup.Split(" ")){
-                Word newWord = new Word(str);
-                newWords.Add(newWord);
-            }
-            typer.SetWordListWords(newWords,2);
-            // Debug.Log(string.Format("Len: {0}", newWords.Count));
-            inventory.longWordsFlag = false;
+        // Word newWord = null;
+        previousWords = typer.getWordList(2);
+        string wordSoup = "";
+        List<Word> newWords = new List<Word>();
+        wordSoup = wordBank.GetLongWords();
+        foreach(string str in wordSoup.Split(" ")){
+            Word newWord = new Word(str);
+            newWords.Add(newWord);
         }
+        typer.SetWordListWords(newWords,2);
+        wordAnimator.wordNextLine(1);
+        // Debug.Log(string.Format("Len: {0}", newWords.Count));
+        inventory.longWordsFlag = false;
+
     }
 
     void revertLongWords(){
