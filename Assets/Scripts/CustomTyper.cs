@@ -500,7 +500,7 @@ public class CustomTyper : MonoBehaviour
         while (true) {
             if (comboCount!= 0) {
                 showComboText = "Combo:";
-                text = "" + comboCount;
+                text = "x " + comboCount;
             }
             else {
                 showComboText = "";
