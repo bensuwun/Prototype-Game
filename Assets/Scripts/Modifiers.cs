@@ -84,6 +84,7 @@ public class Modifiers : MonoBehaviour
         if(inventory.shortSightedFlag) {
             inventory.shortSightedFlag = true;
             ShortSighted(typer.GetCaretPosition());
+            StartCoroutine(EndDebuffAfterTime(armsSpaghettiDuration, (int)Debuffs.ShortSighted));
         }
 
         if (inventory.armsSpaghettiFlag) {
@@ -167,7 +168,8 @@ public class Modifiers : MonoBehaviour
     
     void ArmsSpaghetti() {
         // List<TMP_Text> textComponents = typer.GetTMPText_Components();
-        foreach (TMP_Text textComponent in textComponents) {
+        // foreach (TMP_Text textComponent in textComponents) {
+            var textComponent = textComponents[0];
             var textInfo = textComponent.textInfo;  // Info about text 
 
             for (int i = 0; i < textInfo.characterCount; i++) {
@@ -192,7 +194,7 @@ public class Modifiers : MonoBehaviour
                 meshInfo.mesh.vertices = meshInfo.vertices;
                 textComponent.UpdateGeometry(meshInfo.mesh, i);
             }
-        }
+        // }
     }
 
     // Starting index - current caret position
