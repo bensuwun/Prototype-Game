@@ -18,6 +18,7 @@ public class CustomTyper : MonoBehaviour
     public TextMeshProUGUI currWPMText;
 
     public TextMeshProUGUI comboCounterText;
+    public TextMeshProUGUI comboText;
 
     public WordBank wordBank = null;
     public StatsCalc statsCalc = null;
@@ -107,6 +108,7 @@ public class CustomTyper : MonoBehaviour
         // show current WPM to 0
         currWPMText.text = "" + currWPM;
         comboCounterText.text = "";
+        comboText.text = "";
     }
 
     private void InitializeWordLists(){
@@ -473,13 +475,18 @@ public class CustomTyper : MonoBehaviour
     }
 
     private IEnumerator updateCombo() {
+        string showComboText = "";
         string text = "";
         string textColor = "white";
         while (true) {
             if (comboCount!= 0) {
+                showComboText = "Combo:";
                 text = "" + comboCount;
             }
-            else text = "";
+            else {
+                showComboText = "";
+                text = "";
+            }
 
             if (comboCount > 0) textColor = "white";
             if (comboCount >= 10) textColor = "#00a0ff";
@@ -493,8 +500,10 @@ public class CustomTyper : MonoBehaviour
             // if (comboCount % 60 == 0) inventory.buttonMashFlag = true;
 
             string formattedText = String.Format("<color={0}>{1}</color>", textColor, text);
+            string formattedComboText = String.Format("<color={0}>{1}</color>", textColor, showComboText);
 
             comboCounterText.text = formattedText;
+            comboText.text = formattedComboText;
             
             float fontSize = 60f;
             float perHitFontSize = 0.7f;
