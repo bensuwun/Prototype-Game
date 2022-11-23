@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Text;
@@ -32,6 +33,7 @@ public class CustomTyper : MonoBehaviour
     private List<Word> wordList = new List<Word>();
     private List<Word> wordList2 = new List<Word>();
     private List<Word> wordList3 = new List<Word>();
+    public GameObject caret;
     private StringBuilder sb;
 
     private double currWPM = 0d;
@@ -39,7 +41,8 @@ public class CustomTyper : MonoBehaviour
 
     // Indexing current word and current char
     private int wordIndex = 0;
-    private int charIndex = 0;  // also represents number of typed characters
+    private int charIndex = 0;  // also represents number of typed characters FOR A WORD
+    private int lineCharIndex = 0; // number of typed characters FOR A LINE
     private int caretPosition = 0;
 
     // Colors for correct, incorrect, default characters
@@ -123,6 +126,8 @@ public class CustomTyper : MonoBehaviour
         if(wordList.Count == 0){
             SetWordListWords(wordList, out sourceString);
             SetTextGUI(wordOutput, sourceString);
+            // Update visual caret position
+            UpdateVisualCaretPosition();
         }
         if(wordList2.Count == 0){
             SetWordListWords(wordList2, out sourceString2);
@@ -134,6 +139,8 @@ public class CustomTyper : MonoBehaviour
         }
 
         sb = new StringBuilder(sourceString); // display string for first line ; basis for many code below
+
+        UpdateVisualCaretPosition();
     }
 
     private void SetCurrentWords(){
@@ -172,16 +179,8 @@ public class CustomTyper : MonoBehaviour
         else return null;
     }
 
-    public List<TMP_Text> GetTMPText_Components() {
-        List<TMP_Text> textComponents = new List<TMP_Text>();
-        textComponents.AddRange(new List<TMP_Text>
-        {
-            wordOutput.GetComponent<TMP_Text>(),
-            //wordOutput2.GetComponent<TMP_Text>(),
-            //wordOutput3.GetComponent<TMP_Text>()
-        });
-
-        return textComponents;
+    public int GetCaretPosition () {
+        return caretPosition;
     }
 
     public void SetWordListWords(List<Word> words ,int number){
@@ -231,6 +230,7 @@ public class CustomTyper : MonoBehaviour
         caretPosition = 0;
         // wordIndex += 1; // temporary solution for extra " " at end of each set of words
         wordIndex = 0;
+        lineCharIndex = 0;
     }
 
     // Update is called once per frame
@@ -322,8 +322,8 @@ public class CustomTyper : MonoBehaviour
         Checks if input is correct, incorrect, or an excess.
     */
     void EnterChar(string input) {
-        Debug.Log(string.Format("Word Index: {0} | Char Index: {1} | Caret Position: {2}", 
-            wordIndex, charIndex, caretPosition));
+        // Debug.Log(string.Format("Word Index: {0} | Char Index: {1} | Caret Position: {2}", 
+            // wordIndex, charIndex, caretPosition));
             
         // If current word input is already longer than actual word, show as incorrect
         if (wordList[wordIndex].IsFullyTyped()) {
@@ -338,6 +338,7 @@ public class CustomTyper : MonoBehaviour
 
             // Update charIndex
             charIndex += 1;
+            lineCharIndex += 1;
             player.TakeDamage(1);
             comboCount = 0;
         }
@@ -356,6 +357,7 @@ public class CustomTyper : MonoBehaviour
 
             // Update char index and word properties
             charIndex += 1;
+            lineCharIndex += 1;
             wordList[wordIndex].nTyped += 1;
             wordList[wordIndex].nCorrect += 1;
             numCorrectChars += 1;
@@ -379,11 +381,13 @@ public class CustomTyper : MonoBehaviour
 
             // Update char index and word properties
             charIndex += 1;
+            lineCharIndex += 1;
             wordList[wordIndex].nTyped += 1;
             player.TakeDamage(1);
             comboCount = 0;
         }
-
+        
+        UpdateVisualCaretPosition();
         numCharsTyped += 1;
     }
 
@@ -425,8 +429,10 @@ public class CustomTyper : MonoBehaviour
 
             // Update word properties
             charIndex -= 1;  
+            lineCharIndex -= 1;
         }
-
+        
+        UpdateVisualCaretPosition();
         comboCount = 0;
     }
 
@@ -443,6 +449,7 @@ public class CustomTyper : MonoBehaviour
         if (!wordList[wordIndex].IsFullyTyped()) {
             comboCount = 0;
             caretPosition += wordList[wordIndex].GetRemainingChars() + 1; /// + 1 for whitespace
+            lineCharIndex += wordList[wordIndex].GetRemainingChars(); 
         }
         // Move caret only one (user finished the word)
         else {
@@ -452,8 +459,28 @@ public class CustomTyper : MonoBehaviour
         // Next word, update indices
         wordIndex += 1;
         charIndex = 0;
+        lineCharIndex += 1;
+        UpdateVisualCaretPosition();
+    }
+
+    void UpdateVisualCaretPosition() {
+        Debug.Log("Updating Caret Position");
+        TMP_TextInfo textInfo = wordOutput.GetComponent<TMP_Text>().textInfo;
+        TMP_CharacterInfo charInfo = textInfo.characterInfo[lineCharIndex];
         
-      
+        // Get vector position of current character 
+        Vector3 currentPosition = charInfo.bottomLeft;
+
+        // Convert to world space vector
+        Vector3 worldPos = wordOutput.transform.TransformPoint(currentPosition);
+
+        // Move caret to character position
+        caret.transform.localPosition = new Vector3(currentPosition.x, currentPosition.y + 15, 0);
+
+        Debug.Log(String.Format("Char Index: {0} | Char: {1}", lineCharIndex, charInfo.character));
+        Debug.Log(String.Format("Char Index 0: | Char: {0}", textInfo.characterInfo[0].character));
+        // Debug.Log("Bottom Left Position: " + currentPosition.ToString());
+        // Debug.Log("World Position: " + worldPos.ToString());
     }
 
     // Checks if the current line is already finished, return true if done, false if not

@@ -16,6 +16,7 @@ public class Modifiers : MonoBehaviour
 
     // Debuff variables (Ben)
     public List<TextMeshProUGUI> wordOutputs;
+    public List<TMP_Text> textComponents;
     private float wiggleHeight = 0.5f;
     private float wiggleSpeed = 15f;
     private float debuffCooldownDuration = 3f;
@@ -24,9 +25,8 @@ public class Modifiers : MonoBehaviour
     private string lastDebuff = "";
 
     // Debounce variables
-    private bool endDebuffRunning= false;
-    //private 
-    
+    private bool endDebuffRunning = false;
+    private bool hasTextChanged = false;
 
     private enum Debuffs {
         ShortSighted = 0,
@@ -37,7 +37,27 @@ public class Modifiers : MonoBehaviour
     void Start()
     {
         inventory = typer.GetInventory();
+
+        // Begin countdown for debuff
         StartCoroutine(ObtainDebuffAfterTime(debuffCooldownDuration));
+
+        // Obtain text components for faster access
+        textComponents = new List<TMP_Text>() {
+            wordOutputs[0].GetComponent<TMP_Text>(),
+            wordOutputs[1].GetComponent<TMP_Text>(),
+            wordOutputs[2].GetComponent<TMP_Text>()
+        };
+    }
+
+    void onEnable() {
+        TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
+    }
+
+    // Color 
+    void ON_TEXT_CHANGED(Object obj) {
+        if (obj == textComponents[0]) {
+            hasTextChanged = true;
+        }
     }
 
     // Update is called once per frame
@@ -63,6 +83,7 @@ public class Modifiers : MonoBehaviour
         
         if(inventory.shortSightedFlag) {
             inventory.shortSightedFlag = true;
+            ShortSighted(typer.GetCaretPosition());
         }
 
         if (inventory.armsSpaghettiFlag) {
@@ -146,8 +167,7 @@ public class Modifiers : MonoBehaviour
     
     void ArmsSpaghetti() {
         // List<TMP_Text> textComponents = typer.GetTMPText_Components();
-        foreach (TMP_Text wordOutput in wordOutputs) {
-            var textComponent = wordOutput.GetComponent<TMP_Text>();
+        foreach (TMP_Text textComponent in textComponents) {
             var textInfo = textComponent.textInfo;  // Info about text 
 
             for (int i = 0; i < textInfo.characterCount; i++) {
@@ -175,15 +195,59 @@ public class Modifiers : MonoBehaviour
         }
     }
 
+    // Starting index - current caret position
+    void ShortSighted(int caretPosition) {
+        Color32[] newVertexColors;
+        Color32 c0;
+        for(int i = 0; i < textComponents.Count; i++) {
+            textComponents[i].ForceMeshUpdate();
+            var textInfo = textComponents[i].textInfo;
+            
+            // If first text component, change starting index to caret position instead of 0
+            for (int j = i == 0 ? caretPosition + 2 : 0; j < textInfo.characterCount; j++) {
+                var charInfo = textInfo.characterInfo[j];
+                
+                if (!charInfo.isVisible) {
+                    continue;
+                }
+
+                // Get the index of the material used by the current character
+                int materialIndex = charInfo.materialReferenceIndex;
+
+                // Get the vertex colors of the mesh used by this TMP object
+                newVertexColors = textInfo.meshInfo[materialIndex].colors32;
+
+                // Get the id of first index used by character
+                int vertexIndex = charInfo.vertexIndex;
+
+                // Get current color of current character and set to transparent
+                c0 = new Color32(charInfo.color.r, charInfo.color.g, charInfo.color.b, 0);
+
+                // Update vertex color of character (transparency)
+                newVertexColors[vertexIndex + 0] = c0;
+                newVertexColors[vertexIndex + 1] = c0;
+                newVertexColors[vertexIndex + 2] = c0;
+                newVertexColors[vertexIndex + 3] = c0;
+
+                // Push all updated vertex data to the appropriate meshes when using either the Mesh Renderer or CanvasRenderer
+                textComponents[i].UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+            }
+           
+        }
+
+
+    }
+
     // Pick a random debuff every [n, m] seconds
     IEnumerator ObtainDebuffAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
 
-        // TODO: Pick a random debuff
+        // Pick a random debuff
         int rngNum = UnityEngine.Random.Range(1,4);
         if (rngNum == 1){
-            inventory.shortSightedFlag = true;
+            // inventory.shortSightedFlag = true;
             Debug.Log("Debuff Sight");
         }else if(rngNum == 2){
             inventory.armsSpaghettiFlag = true;
