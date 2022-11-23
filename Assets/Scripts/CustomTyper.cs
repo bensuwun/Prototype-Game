@@ -110,6 +110,11 @@ public class CustomTyper : MonoBehaviour
         currWPMText.text = "" + currWPM;
         comboCounterText.text = "";
         comboText.text = "";
+
+         // Display current WPM on screen
+        StartCoroutine(checkWPM());
+        StartCoroutine(checkIdle());
+        StartCoroutine(updateCombo());
     }
 
     private void InitializeWordLists(){
@@ -273,11 +278,7 @@ public class CustomTyper : MonoBehaviour
                     ResetIndeces();
                 }
 
-                // Display current WPM on screen
-                StartCoroutine(checkWPM());
-                StartCoroutine(checkIdle());
-                StartCoroutine(updateCombo());
-                StartCoroutine(obtainDebuff());
+               
             } 
         }
     }
@@ -528,24 +529,6 @@ public class CustomTyper : MonoBehaviour
 
             comboCounterText.fontSize = fontSize + perHitFontSize * comboCount;
             yield return null;
-        }
-    }
-
-    private IEnumerator obtainDebuff(){
-        yield return new WaitForSeconds(5);
-        while(true){
-            int rngNum = UnityEngine.Random.Range(1,4);
-            if (rngNum == 1){
-                inventory.shortSightedFlag = true;
-                Debug.Log("Debuff Sight");
-            }else if(rngNum == 2){
-                inventory.armsSpaghettiFlag = true;
-                Debug.Log("Debuff Spage");
-            }else if(rngNum == 3){
-                inventory.longWordsFlag = true;
-                Debug.Log("Debuff Long ");
-            }
-            yield return new WaitForSeconds(5);
         }
     }
 }

@@ -12,19 +12,34 @@ public class Modifiers : MonoBehaviour
     private List<Word> previousWords = null;
     private bool testing = true;
     public WordAnimator wordAnimator = null;
-    void Start()
-    {
-        inventory = typer.GetInventory();
-    }
+    
 
     // Debuff variables (Ben)
     public List<TextMeshProUGUI> wordOutputs;
     private float wiggleHeight = 0.5f;
     private float wiggleSpeed = 15f;
-    private float debuffCooldownDuration = 10f;
+    private float debuffCooldownDuration = 3f;
+    private float armsSpaghettiDuration = 5f;
     public bool executingDebuff = false;
     private string lastDebuff = "";
+
+    // Debounce variables
+    private bool endDebuffRunning= false;
+    //private 
     
+
+    private enum Debuffs {
+        ShortSighted = 0,
+        LongWords = 1,
+        ArmsSpaghetti = 2
+    }
+
+    void Start()
+    {
+        inventory = typer.GetInventory();
+        StartCoroutine(ObtainDebuffAfterTime(debuffCooldownDuration));
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -40,17 +55,27 @@ public class Modifiers : MonoBehaviour
             clearDebuffs();
         }
 
-        if(Input.GetKeyDown(KeyCode.RightArrow)){
-            inventory.longWordsFlag = true;
+        if(inventory.longWordsFlag) {
             extraLongWords();
+            inventory.longWordsFlag = false;
+            StartCoroutine(EndDebuffAfterTime(armsSpaghettiDuration, (int)Debuffs.LongWords)); // can set possible range of time instead of constant duration (first param)
         }
         
+        if(inventory.shortSightedFlag) {
+            inventory.shortSightedFlag = true;
+        }
+
         if (inventory.armsSpaghettiFlag) {
             inventory.armsSpaghettiFlag = true;
             ArmsSpaghetti();
-        }
 
-        StartCoroutine(PickDebuffAfterTime(debuffCooldownDuration));
+            // Begin executing timer for ArmsSpaghetti
+            if (!endDebuffRunning){
+                endDebuffRunning = true;
+                StartCoroutine(EndDebuffAfterTime(armsSpaghettiDuration, (int)Debuffs.ArmsSpaghetti));
+            }
+                
+        }
     }
 
     // ================ BUFFS ======================
@@ -109,8 +134,6 @@ public class Modifiers : MonoBehaviour
         typer.SetWordListWords(newWords,2);
         wordAnimator.wordNextLine(1);
         // Debug.Log(string.Format("Len: {0}", newWords.Count));
-        inventory.longWordsFlag = false;
-
     }
 
     // ================ DEBUFFS ====================
@@ -123,7 +146,6 @@ public class Modifiers : MonoBehaviour
     
     void ArmsSpaghetti() {
         // List<TMP_Text> textComponents = typer.GetTMPText_Components();
-
         foreach (TMP_Text wordOutput in wordOutputs) {
             var textComponent = wordOutput.GetComponent<TMP_Text>();
             var textInfo = textComponent.textInfo;  // Info about text 
@@ -154,17 +176,45 @@ public class Modifiers : MonoBehaviour
     }
 
     // Pick a random debuff every [n, m] seconds
-    IEnumerator PickDebuffAfterTime(float time)
+    IEnumerator ObtainDebuffAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
 
-        // TODO: Pick a random debuff (Ben)
-        inventory.armsSpaghettiFlag = true;
+        // TODO: Pick a random debuff
+        int rngNum = UnityEngine.Random.Range(1,4);
+        if (rngNum == 1){
+            inventory.shortSightedFlag = true;
+            Debug.Log("Debuff Sight");
+        }else if(rngNum == 2){
+            inventory.armsSpaghettiFlag = true;
+            Debug.Log("Debuff Spage");
+        }else if(rngNum == 3){
+            inventory.longWordsFlag = true;
+            Debug.Log("Debuff Long ");
+        }
+    }
 
-        // TODO: Set duration of cooldown before next debuff (Ben)
+    /**
+        After certain amount of time, end debuff given by debuff code.
+        After debuff ends, start coroutine to pick another debuff after [n,m] amount of time
+    */
+    IEnumerator EndDebuffAfterTime(float time, int debuffCode)
+    {
+        yield return new WaitForSeconds(time);
 
-        // TODO: Set duration of spaghetti and shortsighted debuffs (Ben)
-        
-        
+        switch(debuffCode) {
+            case (int)Debuffs.ArmsSpaghetti:
+                inventory.armsSpaghettiFlag = false;
+                break;
+            case (int)Debuffs.LongWords:
+                inventory.shortSightedFlag = false;
+                break;
+        }
+
+        endDebuffRunning = false;
+
+        // Pick random debuff after certain amount of time
+        // TODO: Randomize value given range
+        StartCoroutine(ObtainDebuffAfterTime(debuffCooldownDuration));
     }
 }
