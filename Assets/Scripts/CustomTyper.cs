@@ -104,7 +104,7 @@ public class CustomTyper : MonoBehaviour
         player.setMaxHP(playerHP);
 
         // sets the words that are displayed
-        InitializeWordLists();
+        StartCoroutine(InitializeWordLists());
 
         // gets the current time
         statsCalc.getStart();
@@ -120,7 +120,7 @@ public class CustomTyper : MonoBehaviour
         StartCoroutine(updateCombo());
     }
 
-    private void InitializeWordLists(){
+    IEnumerator InitializeWordLists(){
         // For initialization: Each list gets filled with words
         
         if(wordList.Count == 0){
@@ -140,10 +140,11 @@ public class CustomTyper : MonoBehaviour
 
         sb = new StringBuilder(sourceString); // display string for first line ; basis for many code below
 
+        yield return new WaitForSeconds(0.1f);
         UpdateVisualCaretPosition();
     }
 
-    private void SetCurrentWords(){
+    IEnumerator SetCurrentWords(){
         // Once wordlist 1 is empty (Player is done with the line)
         // wordlist 1 <- wordlist 2 <- wordlist 3
         // then wordlist 3 gets new set of words
@@ -166,8 +167,10 @@ public class CustomTyper : MonoBehaviour
         wordAnimator.wordNextLine(2);
         SetTextGUI(wordOutput3, sourceString3);
 
-
         sb = new StringBuilder(sourceString); 
+
+        yield return new WaitForSeconds(0.1f);
+        UpdateVisualCaretPosition();
     }
     public List<Word> getWordList(int number){
         if(number == 1)
@@ -274,7 +277,7 @@ public class CustomTyper : MonoBehaviour
 
                 // Check if the current words on the screen are already finished and set new words
                 if (AreWordsComplete()) {
-                    SetCurrentWords();
+                    StartCoroutine(SetCurrentWords());
                     ResetIndeces();
                 }
 
@@ -464,21 +467,20 @@ public class CustomTyper : MonoBehaviour
     }
 
     void UpdateVisualCaretPosition() {
-        Debug.Log("Updating Caret Position");
         TMP_TextInfo textInfo = wordOutput.GetComponent<TMP_Text>().textInfo;
         TMP_CharacterInfo charInfo = textInfo.characterInfo[lineCharIndex];
         
         // Get vector position of current character 
         Vector3 currentPosition = charInfo.bottomLeft;
 
-        // Convert to world space vector
-        Vector3 worldPos = wordOutput.transform.TransformPoint(currentPosition);
+        // Convert to world space vector (not needed since canvas is screen-overlay based?)
+        // Vector3 worldPos = wordOutput.transform.TransformPoint(currentPosition);
 
         // Move caret to character position
         caret.transform.localPosition = new Vector3(currentPosition.x, currentPosition.y + 15, 0);
 
-        Debug.Log(String.Format("Char Index: {0} | Char: {1}", lineCharIndex, charInfo.character));
-        Debug.Log(String.Format("Char Index 0: | Char: {0}", textInfo.characterInfo[0].character));
+        // Debug.Log(String.Format("Char Index: {0} | Char: {1}", lineCharIndex, charInfo.character));
+        // Debug.Log(String.Format("Char Index 0: | Char: {0}", textInfo.characterInfo[0].character));
         // Debug.Log("Bottom Left Position: " + currentPosition.ToString());
         // Debug.Log("World Position: " + worldPos.ToString());
     }
