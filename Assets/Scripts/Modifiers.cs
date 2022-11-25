@@ -97,13 +97,14 @@ public class Modifiers : MonoBehaviour
         }
         
         if(inventory.shortSightedFlag) {
-            inventory.shortSightedFlag = true;
-            ShortSighted(typer.GetCaretPosition());
-            StartCoroutine(EndDebuffAfterTime(armsSpaghettiDuration, (int)Debuffs.ShortSighted));
+            // ShortSighted(typer.GetCaretPosition());
+            if (!endDebuffRunning){
+                endDebuffRunning = true;
+                StartCoroutine(EndDebuffAfterTime(armsSpaghettiDuration, (int)Debuffs.ArmsSpaghetti));
+            }
         }
 
         if (inventory.armsSpaghettiFlag) {
-            inventory.armsSpaghettiFlag = true;
             ArmsSpaghetti();
 
             // Begin executing timer for ArmsSpaghetti
@@ -191,7 +192,7 @@ public class Modifiers : MonoBehaviour
             for (int i = 0; i < textInfo.characterCount; i++) {
                 var charInfo = textInfo.characterInfo[i];
                 
-                // Only do visible characters (ignore rich text)
+                // Only do visible characters
                 if (!charInfo.isVisible) {
                     continue;
                 }
@@ -265,7 +266,7 @@ public class Modifiers : MonoBehaviour
         // Pick a random debuff
         int rngNum = UnityEngine.Random.Range(1,4);
         if (rngNum == 1){
-            // inventory.shortSightedFlag = true;
+            inventory.shortSightedFlag = true;
             Debug.Log("Debuff Sight");
         }else if(rngNum == 2){
             inventory.armsSpaghettiFlag = true;
@@ -287,8 +288,13 @@ public class Modifiers : MonoBehaviour
         switch(debuffCode) {
             case (int)Debuffs.ArmsSpaghetti:
                 inventory.armsSpaghettiFlag = false;
+                char ch = textComponents[0].textInfo.characterInfo[0].character;
+                textComponents[0].textInfo.characterInfo[0].character = ch;
                 break;
             case (int)Debuffs.LongWords:
+                inventory.longWordsFlag = false;
+                break;
+            case (int)Debuffs.ShortSighted:
                 inventory.shortSightedFlag = false;
                 break;
         }
