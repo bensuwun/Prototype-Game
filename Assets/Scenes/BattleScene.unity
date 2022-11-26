@@ -396,6 +396,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: c8e9d1c0d8d445948a6df048871bb63d, type: 3}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.b
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.r
+      value: 0.4811321
+      objectReference: {fileID: 0}
     - target: {fileID: 1572607328265292405, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
       propertyPath: m_Name
       value: Spaghetti
@@ -823,6 +835,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: abf5b544d1e1e6940b13299e00a25b77, type: 3}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.b
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.r
+      value: 0.4811321
+      objectReference: {fileID: 0}
     - target: {fileID: 1572607328265292405, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
       propertyPath: m_Name
       value: ButtonMash
@@ -1103,6 +1127,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 1551bb114895f5f4d9c340b306e30435, type: 3}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.b
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.r
+      value: 0.4811321
+      objectReference: {fileID: 0}
     - target: {fileID: 1572607328265292405, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
       propertyPath: m_Name
       value: Cleanse
@@ -1478,6 +1514,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 799346935}
   m_CullTransparentMesh: 1
+--- !u!1 &826553870
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 826553872}
+  - component: {fileID: 826553871}
+  m_Layer: 0
+  m_Name: PlayerInventory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &826553871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 826553870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13ccc60c3e05f4b4db3411cdd80d1fa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &826553872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 826553870}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &835603652
 GameObject:
   m_ObjectHideFlags: 0
@@ -1745,7 +1825,9 @@ MonoBehaviour:
   player: {fileID: 1997416438}
   boss: {fileID: 915062712}
   wordAnimator: {fileID: 357527685}
+  inventory: {fileID: 826553871}
   caret: {fileID: 1329400780}
+  modifier: {fileID: 1492312093}
   correctColor: '#F5F5F5'
   incorrectColor: '#E3001B'
   defaultColor: '#1C1B01'
@@ -2225,6 +2307,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 73103cc4bf3f65044bc6c63f997f7df8, type: 3}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.b
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.r
+      value: 0.4811321
+      objectReference: {fileID: 0}
     - target: {fileID: 1572607328265292405, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
       propertyPath: m_Name
       value: LongWords
@@ -2641,6 +2735,7 @@ MonoBehaviour:
   player: {fileID: 1997416438}
   wpm: {fileID: 1976949886}
   typer: {fileID: 987233048}
+  inventory: {fileID: 826553871}
   wordBank: {fileID: 1363960120}
   wordAnimator: {fileID: 357527685}
   modifiers:
@@ -2682,6 +2777,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 23d7beb69729cb741b1ff4b58941bcaf, type: 3}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.b
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.r
+      value: 0.4811321
+      objectReference: {fileID: 0}
     - target: {fileID: 1572607328265292405, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
       propertyPath: m_Name
       value: ShortSighted
@@ -3482,6 +3589,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1061834693}
     m_Modifications:
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.b
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 759574070222995644, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
+      propertyPath: m_Color.r
+      value: 0.4811321
+      objectReference: {fileID: 0}
     - target: {fileID: 1572607328265292405, guid: 35391c5e0d671f04b93277b71847473c, type: 3}
       propertyPath: m_Name
       value: Regen

@@ -26,7 +26,7 @@ public class CustomTyper : MonoBehaviour
     public Player player = null;
     public Boss boss = null;
     public WordAnimator wordAnimator = null;
-    private PlayerInventory inventory = null;
+    public PlayerInventory inventory = null;
     private string sourceString = string.Empty;
     private string sourceString2 = string.Empty;
     private string sourceString3 = string.Empty; 
@@ -35,6 +35,7 @@ public class CustomTyper : MonoBehaviour
     private List<Word> wordList3 = new List<Word>();
     public GameObject caret;
     private StringBuilder sb;
+    public Modifiers modifier;
 
     private double currWPM = 0d;
     private double wpmThreshold = 0d;
@@ -74,7 +75,6 @@ public class CustomTyper : MonoBehaviour
     }
 
     public void instantiateBattle(int level) {
-        inventory = (PlayerInventory) ScriptableObject.CreateInstance(className: "PlayerInventory");
         LEVEL = level;
         float bossHP = 0f;
         float playerHP = 100f;
@@ -244,11 +244,11 @@ public class CustomTyper : MonoBehaviour
         if(boss.isBossDead()) {
             print("THE BOSS IS DEAD");
             print("WPM: " + currWPM);
-            SceneManager.LoadScene("Main Menu");
+            // SceneManager.LoadScene("Main Menu");
         }
         else if (player.isPlayerDead()) {
             print("YOU DIED");
-            SceneManager.LoadScene("Main Menu");
+            // SceneManager.LoadScene("Main Menu");
         }
         else {
             string inputString = Input.inputString;
@@ -328,6 +328,9 @@ public class CustomTyper : MonoBehaviour
         // Debug.Log(string.Format("Word Index: {0} | Char Index: {1} | Caret Position: {2}", 
             // wordIndex, charIndex, caretPosition));
             
+        // if enter number(use buff) do nothing
+        if (Char.IsNumber(input[0])) return;
+
         // If current word input is already longer than actual word, show as incorrect
         if (wordList[wordIndex].IsFullyTyped()) {
             string formattedInput = FormatInput(input, (int) Enums.IncorrectInputFormat);
@@ -543,9 +546,18 @@ public class CustomTyper : MonoBehaviour
             if (comboCount >= 40) textColor = "#ff7f1c";
             if (comboCount >= 50) textColor = "#ff3af2";
 
-            if (comboCount % 35 == 0) inventory.clearDebuffFlag = true;
-            if (comboCount % 50 == 0) inventory.hpRegenFlag = true;
-            if (comboCount % 60 == 0) inventory.buttonMashFlag = true;
+            if (comboCount % 35 == 0 && comboCount > 0){
+                inventory.clearDebuffFlag = true;
+                modifier.SetBuffActive((int)Modifiers.Buffs.ClearDebuff, inventory.clearDebuffFlag);
+            } 
+            if (comboCount % 50 == 0 && comboCount > 0){
+                inventory.hpRegenFlag = true;
+                modifier.SetBuffActive((int)Modifiers.Buffs.HPRegen, inventory.hpRegenFlag);
+            }
+            if (comboCount % 60 == 0 && comboCount > 0){
+                inventory.buttonMashFlag = true;
+                modifier.SetBuffActive((int)Modifiers.Buffs.ButtonMash, inventory.buttonMashFlag);
+            }
 
             string formattedText = String.Format("<color={0}>{1}</color>", textColor, text);
             string formattedComboText = String.Format("<color={0}>{1}</color>", textColor, showComboText);
@@ -560,4 +572,5 @@ public class CustomTyper : MonoBehaviour
             yield return null;
         }
     }
+
 }
