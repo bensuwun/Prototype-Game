@@ -8,7 +8,7 @@ public class ScreenSwitcher : MonoBehaviour
 {
     public void OpenScene(int index)
     {
-        SceneManager.LoadScene(index);
+        SceneManager.LoadScene(sceneBuildIndex: index);
     }
 
     public void ExitGame ()
