@@ -4,11 +4,19 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour {
 
-	public Dialogue dialogue;
+	[SerializeField]
+	public List<Dialogue> dialogue;
     public DialogueManager manager;
-	public void TriggerDialogue()
+	public void TriggerDialogue(int index)
 	{
-		manager.StartDialogue(dialogue);
+		// Debug.Log(index);
+		manager.StartDialogue(dialogue[index]);
+	}
+
+	public void InitializeDialogues(){
+		// read file
+		// store file content into List
+
 	}
 
 }
