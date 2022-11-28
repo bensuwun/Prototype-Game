@@ -4,6 +4,7 @@ using System.Collections;
 using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -59,6 +60,10 @@ public class CustomTyper : MonoBehaviour
     private float idleTimeLimit = 5f;
 
     private int comboCount = 0;
+
+    // Postgame Modal Variables
+    public GameObject modal;
+    private bool isModalShowing = false;
 
 
     // Enums
@@ -126,8 +131,6 @@ public class CustomTyper : MonoBehaviour
         if(wordList.Count == 0){
             SetWordListWords(wordList, out sourceString);
             SetTextGUI(wordOutput, sourceString);
-            // Update visual caret position
-            UpdateVisualCaretPosition();
         }
         if(wordList2.Count == 0){
             SetWordListWords(wordList2, out sourceString2);
@@ -244,10 +247,15 @@ public class CustomTyper : MonoBehaviour
         if(boss.isBossDead()) {
             print("THE BOSS IS DEAD");
             print("WPM: " + currWPM);
+            if (!isModalShowing)
+                DisplayResults((int)currWPM, 0, "VICTORY");
+
             // SceneManager.LoadScene("Main Menu");
         }
         else if (player.isPlayerDead()) {
             print("YOU DIED");
+            if (!isModalShowing)
+                DisplayResults((int)currWPM, 0, "DEFEAT");
             // SceneManager.LoadScene("Main Menu");
         }
         else {
@@ -495,6 +503,40 @@ public class CustomTyper : MonoBehaviour
         bool isThereNoNextWord = wordList.Count == (wordIndex + 1);
         bool isWordFullyTyped = wordList[wordIndex].IsFullyTyped();
         return isThereNoNextWord && isWordFullyTyped;
+    }
+
+    private void DisplayResults(int WPM, int accuracy, string result) {
+        isModalShowing = true;
+
+        GameObject WPMResult = modal.transform.Find("WPMResult").gameObject;
+        GameObject accuracyResult = modal.transform.Find("AccuracyResult").gameObject;
+        GameObject button = modal.transform.Find("Button").gameObject;
+        GameObject title = modal.transform.Find("Title").gameObject;
+
+        // Set title, can change color
+        if (result.Equals("VICTORY")) {
+            title.GetComponent<TMP_Text>().text = result;
+            button.transform.Find("Button").gameObject.GetComponent<TMP_Text>().text = "Continue";
+            button.GetComponent<Button>().onClick.AddListener(() => {
+                // TODO: Set scene to next scene
+            });
+        }
+        else {
+            title.GetComponent<TMP_Text>().text = result;
+            button.transform.Find("Button").gameObject.GetComponent<TMP_Text>().text = "Retry";
+            button.GetComponent<Button>().onClick.AddListener(() => {
+                // TODO: Reset scene with same parameters
+            });
+        }
+
+        // Set result values
+        WPMResult.GetComponent<TMP_Text>().text = WPM.ToString();
+
+        // TODO: Calculate accuracy
+        accuracyResult.GetComponent<TMP_Text>().text = accuracy.ToString();
+
+        // Set modal to active
+        modal.SetActive(true);
     }
 
     public PlayerInventory GetInventory(){

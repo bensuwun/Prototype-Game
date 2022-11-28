@@ -26,11 +26,9 @@ public class Modifiers : MonoBehaviour
     private float debuffCooldownDuration = 3f;
     private float armsSpaghettiDuration = 5f;
     public bool executingDebuff = false;
-    private string lastDebuff = "";
 
     // Debounce variables
     private bool endDebuffRunning = false;
-    private bool hasTextChanged = false;
 
     public enum Buffs{
         HPRegen = 0,
@@ -59,17 +57,6 @@ public class Modifiers : MonoBehaviour
             wordOutputs[2].GetComponent<TMP_Text>()
         };
 
-    }
-
-    void onEnable() {
-        TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
-    }
-
-    // Color 
-    void ON_TEXT_CHANGED(Object obj) {
-        if (obj == textComponents[0]) {
-            hasTextChanged = true;
-        }
     }
 
     // Update is called once per frame
