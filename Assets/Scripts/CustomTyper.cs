@@ -1,3 +1,4 @@
+using System.Xml.Serialization;
 using System.Threading.Tasks;
 using System;
 using System.Collections;
@@ -16,6 +17,9 @@ public class CustomTyper : MonoBehaviour
     public TextMeshProUGUI wordOutput2;
     public TextMeshProUGUI wordOutput3;
 
+
+    // Boss Image
+    public Image bossImage;
     // Current WPM
     public TextMeshProUGUI currWPMText;
 
@@ -76,26 +80,31 @@ public class CustomTyper : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        instantiateBattle(1);
+        int level = DataManager.GetLevel();
+        
+        instantiateBattle(level);
     }
 
     public void instantiateBattle(int level) {
         LEVEL = level;
         float bossHP = 0f;
         float playerHP = 100f;
-
+        
         switch(LEVEL) {
             case 1:
+                
                 bossHP = 100f;
                 wpmThreshold = 10d;
                 idleTimeLimit = 10f;
                 break;
             case 2:
+                bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS-1");
                 bossHP = 200f;
                 wpmThreshold = 20d;
                 idleTimeLimit = 6f;
                 break;
             case 3:
+                bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/Final Boss");
                 bossHP = 300f;
                 wpmThreshold = 30d;
                 idleTimeLimit = 3f;
