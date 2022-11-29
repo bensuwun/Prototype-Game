@@ -89,7 +89,7 @@ public class CustomTyper : MonoBehaviour
         LEVEL = level;
         float bossHP = 0f;
         float playerHP = 100f;
-        
+
         switch(LEVEL) {
             case 1:
                 
@@ -251,21 +251,17 @@ public class CustomTyper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // print(boss.isBossDead());
-        // print(player.isPlayerDead());
+        //TODO: Remove DisplayResults here
+        // DisplayResults((int) currWPM, 0, "VICTORY");
         if(boss.isBossDead()) {
-            print("THE BOSS IS DEAD");
-            print("WPM: " + currWPM);
+            // TODO: Include accuracy here
             if (!isModalShowing)
                 DisplayResults((int)currWPM, 0, "VICTORY");
-
-            // SceneManager.LoadScene("Main Menu");
         }
         else if (player.isPlayerDead()) {
-            print("YOU DIED");
+            // TODO: Include accuracy here
             if (!isModalShowing)
                 DisplayResults((int)currWPM, 0, "DEFEAT");
-            // SceneManager.LoadScene("Main Menu");
         }
         else {
             string inputString = Input.inputString;
@@ -493,16 +489,12 @@ public class CustomTyper : MonoBehaviour
         // Get vector position of current character 
         Vector3 currentPosition = charInfo.bottomLeft;
 
-        // Convert to world space vector (not needed since canvas is screen-overlay based?)
-        // Vector3 worldPos = wordOutput.transform.TransformPoint(currentPosition);
-
         // Move caret to character position
         caret.transform.localPosition = new Vector3(currentPosition.x, currentPosition.y + 15, 0);
 
         // Debug.Log(String.Format("Char Index: {0} | Char: {1}", lineCharIndex, charInfo.character));
         // Debug.Log(String.Format("Char Index 0: | Char: {0}", textInfo.characterInfo[0].character));
         // Debug.Log("Bottom Left Position: " + currentPosition.ToString());
-        // Debug.Log("World Position: " + worldPos.ToString());
     }
 
     // Checks if the current line is already finished, return true if done, false if not
@@ -525,16 +517,20 @@ public class CustomTyper : MonoBehaviour
         // Set title, can change color
         if (result.Equals("VICTORY")) {
             title.GetComponent<TMP_Text>().text = result;
-            button.transform.Find("Button").gameObject.GetComponent<TMP_Text>().text = "Continue";
+            button.transform.Find("Text").gameObject.GetComponent<TMP_Text>().text = "Continue";
             button.GetComponent<Button>().onClick.AddListener(() => {
                 // TODO: Set scene to next scene
+                // SceneManager.UnloadSceneAsync("BattleScene");
+                // SceneManager.LoadScene("StoryScene");
+                Debug.Log("Button pressed");
             });
         }
         else {
             title.GetComponent<TMP_Text>().text = result;
-            button.transform.Find("Button").gameObject.GetComponent<TMP_Text>().text = "Retry";
+            button.transform.Find("Text").gameObject.GetComponent<TMP_Text>().text = "Retry";
             button.GetComponent<Button>().onClick.AddListener(() => {
                 // TODO: Reset scene with same parameters
+                Debug.Log("Button pressed");
             });
         }
 

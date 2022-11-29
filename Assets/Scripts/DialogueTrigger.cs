@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DialogueTrigger : MonoBehaviour {
 
@@ -12,6 +13,9 @@ public class DialogueTrigger : MonoBehaviour {
 		// Debug.Log(index);
 		if(index < dialogue.Count)
 			manager.StartDialogue(dialogue[index]);
+		
+		// TDOO: Setup scene transitions based on dialog index
+		
 	}
 
 	public void InitializeDialogues(){

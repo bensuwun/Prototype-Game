@@ -212,11 +212,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 58778996}
   m_CullTransparentMesh: 1
---- !u!1 &90903793 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 955023988627514122, guid: 40bad4ae867a51845afc2d4806a507bd, type: 3}
-  m_PrefabInstance: {fileID: 233107229}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &90903794 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6082030340591249395, guid: 40bad4ae867a51845afc2d4806a507bd, type: 3}
@@ -232,22 +227,10 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 935501245776985, guid: 40bad4ae867a51845afc2d4806a507bd, type: 3}
   m_PrefabInstance: {fileID: 233107229}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 90903793}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &90903798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 90903793}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 147f5acba58250347a4224f1f1811885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &136760283
@@ -2216,7 +2199,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 941929024}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &941929024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2267,7 +2262,7 @@ GameObject:
   - component: {fileID: 966642399}
   - component: {fileID: 966642398}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2424,6 +2419,7 @@ MonoBehaviour:
   wordOutput: {fileID: 90903796}
   wordOutput2: {fileID: 1968282020}
   wordOutput3: {fileID: 1724127293}
+  bossImage: {fileID: 335988082}
   currWPMText: {fileID: 1976949886}
   comboCounterText: {fileID: 136760285}
   comboText: {fileID: 1837179164}
@@ -4056,10 +4052,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 548041707}
     m_Modifications:
-    - target: {fileID: 935501245776985, guid: 40bad4ae867a51845afc2d4806a507bd, type: 3}
-      propertyPath: m_HorizontalAlignment
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 955023988627514122, guid: 40bad4ae867a51845afc2d4806a507bd, type: 3}
       propertyPath: m_Name
       value: Words V2 (1)
@@ -4403,10 +4395,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 548041707}
     m_Modifications:
-    - target: {fileID: 935501245776985, guid: 40bad4ae867a51845afc2d4806a507bd, type: 3}
-      propertyPath: m_HorizontalAlignment
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 955023988627514122, guid: 40bad4ae867a51845afc2d4806a507bd, type: 3}
       propertyPath: m_Name
       value: Words V2 (2)
