@@ -10,7 +10,7 @@ public class DialogueManager : MonoBehaviour {
 
 	public TextMeshProUGUI nameText;
 	public TextMeshProUGUI dialogueText;
-	private Queue<string> sentences;
+	private Queue<string> sentences = new Queue<string>();
     public DialogueTrigger dialogueTrigger;
 	public TimelinePlayer timeline;
 	private int dialogueIndex = 0;
@@ -18,21 +18,14 @@ public class DialogueManager : MonoBehaviour {
 
     void OnEnable()
     {
-        // Debug.Log("HERE");
-        this.IncrementDialogueIndex();
-        button.interactable = true;
-    }
-	// Use this for initialization
-	void Start () {
-		sentences = new Queue<string>();
-        dialogueTrigger.TriggerDialogue(dialogueIndex);
+        Debug.Log("HERE");
 		IncrementDialogueIndex();
-	}
-	
+        button.interactable = true;
+    }	
 
 	public void StartDialogue (Dialogue dialogue)
 	{
-		// Debug.Log(String.Format("Dialogue: {0} - {1}", dialogue.name, dialogue.sentences[0]));
+		Debug.Log(String.Format("Dialogue: {0} - {1}", dialogue.name, dialogue.sentences[0]));
 		nameText.text = dialogue.name;
 
 		sentences.Clear();
@@ -50,14 +43,13 @@ public class DialogueManager : MonoBehaviour {
 		if(sentences.Count > 0){
 			sentence = sentences.Dequeue();
 		}else{
-			// IncrementDialogueIndex();
-			button.interactable = false;
-			timeline.StartTimeline();
+			IncrementDialogueIndex();
 			return;
 		}
-		Debug.Log("XD");
+		// Debug.Log("XD");
 		StopAllCoroutines();
 		StartCoroutine(TypeSentence(sentence));
+		
 	}
 
 	public void IncrementDialogueIndex(){
@@ -71,6 +63,9 @@ public class DialogueManager : MonoBehaviour {
 		foreach (char letter in sentence.ToCharArray())
 		{
 			dialogueText.text += letter;
+			if(String.Equals(dialogueText.text,sentence)){
+				timeline.PlayTimeline(sentence);
+			}
 			yield return null;
 		}
 	}

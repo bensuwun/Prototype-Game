@@ -6,6 +6,7 @@ public class LoadNextScene : MonoBehaviour
 {
     void OnEnable()
     {
-        SceneManager.LoadScene("BattleScene");
+        // SceneManager.LoadScene("part1");
+        Debug.Log("Next Scene!");
     }
 }

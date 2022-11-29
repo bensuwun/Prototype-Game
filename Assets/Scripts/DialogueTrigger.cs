@@ -10,7 +10,8 @@ public class DialogueTrigger : MonoBehaviour {
 	public void TriggerDialogue(int index)
 	{
 		// Debug.Log(index);
-		manager.StartDialogue(dialogue[index]);
+		if(index < dialogue.Count)
+			manager.StartDialogue(dialogue[index]);
 	}
 
 	public void InitializeDialogues(){

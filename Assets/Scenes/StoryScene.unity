@@ -689,7 +689,7 @@ MonoBehaviour:
     - Why did things turn out this way?
     - "I wanted to create something but now I\u2019m just surviving."
     - Life is really unfair.
-    - "If only mom and dad\u2026 \r"
+    - If only mom and dad...
   - name: Emagres
     sentences:
     - What is this thing?
@@ -1066,6 +1066,8 @@ PlayableDirector:
     value: {fileID: 87291204}
   - key: {fileID: 3960863837774604018, guid: 9faf0e5e0dadaae41aea2e10d99163bf, type: 2}
     value: {fileID: 730893313}
+  - key: {fileID: -9142839224842962875, guid: 9faf0e5e0dadaae41aea2e10d99163bf, type: 2}
+    value: {fileID: 357434775}
   m_ExposedReferences:
     m_References:
     - 8e47dbe9583c5884793887ece5b15c4b: {fileID: 730893313}
@@ -1080,7 +1082,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1427800355}
   m_Father: {fileID: 2147345547}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1451,6 +1454,7 @@ MonoBehaviour:
   - {fileID: 1174895664}
   - {fileID: 571395495}
   - {fileID: 1427800356}
+  button: {fileID: 357434777}
 --- !u!4 &1128410957
 Transform:
   m_ObjectHideFlags: 0
@@ -1502,6 +1506,8 @@ PlayableDirector:
     value: {fileID: 931149442}
   - key: {fileID: -2973267887789782242, guid: 5b79a14e2ef5f1f41983c88a6d5ad75a, type: 2}
     value: {fileID: 256053261}
+  - key: {fileID: 4099718891143662766, guid: 5b79a14e2ef5f1f41983c88a6d5ad75a, type: 2}
+    value: {fileID: 357434775}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &1174895665
@@ -1835,13 +1841,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427800354}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2147345547}
-  m_RootOrder: 2
+  m_Father: {fileID: 571395496}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!320 &1427800356
 PlayableDirector:
@@ -2325,7 +2331,6 @@ Transform:
   m_Children:
   - {fileID: 1174895665}
   - {fileID: 571395496}
-  - {fileID: 1427800355}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
