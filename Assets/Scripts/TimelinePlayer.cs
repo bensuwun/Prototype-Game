@@ -15,9 +15,10 @@ public class TimelinePlayer : MonoBehaviour
         bool haveCutscene = CutsceneDict.cutsceneMarker.TryGetValue(marker, out directorsIndex);
         if(directorsIndex < directors.Count && haveCutscene){
             // Debug.Log(directorsIndex);
-            button.interactable = false;
+            // button.interactable = false;
             directors[directorsIndex].Play();
         }
+
     }
 
     void Awake()
