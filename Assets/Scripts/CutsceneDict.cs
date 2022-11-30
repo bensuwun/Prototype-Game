@@ -9,6 +9,7 @@ public class CutsceneDict
         {"If only mom and dad...", 1},
         {"What is this thing?", 2},
         {"I’d appreciate that Miss Ivy, my name is Emagres, pleased to meet you.", 3},
+        {"       ", 4}, // tutorial boss
     };
     
 }
