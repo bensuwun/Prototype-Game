@@ -21,7 +21,7 @@ public class TimelinePlayer : MonoBehaviour
                
             if(previousTimeline != null && previousTimeline.state == PlayState.Playing){
                 Debug.Log("Pause");
-                previousTimeline.Pause();
+                // previousTimeline.Pause();
             }
             directors[directorsIndex].Play();
         }
@@ -34,9 +34,10 @@ public class TimelinePlayer : MonoBehaviour
         int level = DataManager.GetLevel();
         if(level == 1) 
             PlayTimeline("Intro");
-        else if(level == 2)
+        else if(level == 2){
+            Debug.Log("Level 1 ?!?!");
             PlayTimeline("PostTutorial");
-        else if(level == 3)
+        }else if(level == 3)
             PlayTimeline("PostAmogus");
     }
 }

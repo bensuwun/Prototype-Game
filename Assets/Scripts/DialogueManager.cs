@@ -25,7 +25,9 @@ public class DialogueManager : MonoBehaviour {
 	
 	void Awake()
 	{
+		DataManager.SaveDialogueIndex(0);
 		dialogueIndex = DataManager.GetDialogueIndex();
+		Debug.Log(String.Format("Dialogue Index: {0}", dialogueIndex));
 	}
 
 	public void StartDialogue (Dialogue dialogue)
@@ -70,6 +72,7 @@ public class DialogueManager : MonoBehaviour {
 		{
 			dialogueText.text += letter;
 			if(String.Equals(dialogueText.text,sentence)){
+				Debug.Log(String.Format("Marker: {0}", sentence));
 				timeline.PlayTimeline(sentence);
 			}
 			yield return null;
