@@ -92,20 +92,20 @@ public class CustomTyper : MonoBehaviour
         float playerHP = 100f;
 
         switch(LEVEL) {
-            case 0:
+            case 1:
                 // TODO: Remove or set Ivy as boss image
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
                 bossHP = 100f;
                 wpmThreshold = 10d;
                 idleTimeLimit = 10f;
                 break;
-            case 1:
+            case 2:
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
                 bossHP = 200f;
                 wpmThreshold = 20d;
                 idleTimeLimit = 6f;
                 break;
-            case 2:
+            case 3:
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/Final Boss");
                 bossHP = 300f;
                 wpmThreshold = 30d;
@@ -528,9 +528,10 @@ public class CustomTyper : MonoBehaviour
 
                     // Update player's level
                     int currentLevel = DataManager.GetLevel();
-                    DataManager.SaveLevel((currentLevel + 1) % 3);
+                    int nextLevel = currentLevel == 3 ? 1 : currentLevel + 1;
+                    DataManager.SaveLevel(nextLevel);
 
-                    StartCoroutine(CustomSceneManager.UnloadSceneAsync("BattleScene"));
+                    SceneManager.LoadScene("StoryScene");
                 }
                 Debug.Log("Button pressed");
             });
@@ -543,7 +544,7 @@ public class CustomTyper : MonoBehaviour
                 button.GetComponent<Button>().onClick.RemoveAllListeners();
 
                 // Reset scene with same parameters
-                StartCoroutine(CustomSceneManager.ReloadAdditiveSceneAsync("BattleScene"));
+                SceneManager.LoadScene("BattleScene");
                 Debug.Log("Retry button pressed");
             });
         }

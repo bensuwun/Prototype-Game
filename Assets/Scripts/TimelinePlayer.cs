@@ -35,7 +35,6 @@ public class TimelinePlayer : MonoBehaviour
         if(level == 1) 
             PlayTimeline("Intro");
         else if(level == 2){
-            Debug.Log("Level 1 ?!?!");
             PlayTimeline("PostTutorial");
         }else if(level == 3)
             PlayTimeline("PostAmogus");
