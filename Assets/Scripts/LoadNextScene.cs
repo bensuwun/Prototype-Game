@@ -11,7 +11,7 @@ public class LoadNextScene : MonoBehaviour
     }
 
     void PlayBattleScene(){
-        DataManager.SaveLevel(level++);
+        // DataManager.SaveLevel(level);
         SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
     }
 }
