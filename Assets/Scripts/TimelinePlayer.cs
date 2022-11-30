@@ -30,6 +30,13 @@ public class TimelinePlayer : MonoBehaviour
 
     void Awake()
     {
-        PlayTimeline("Intro");
+        // int level = DataManager.GetLevel();
+        int level = DataManager.GetLevel();
+        if(level == 1) 
+            PlayTimeline("Intro");
+        else if(level == 2)
+            PlayTimeline("PostTutorial");
+        else if(level == 3)
+            PlayTimeline("PostAmogus");
     }
 }

@@ -18,14 +18,19 @@ public class DialogueManager : MonoBehaviour {
 
     void OnEnable()
     {
-        Debug.Log("HERE");
+        // Debug.Log("HERE");
 		IncrementDialogueIndex();
         button.interactable = true;
-    }	
+	}
+	
+	void Awake()
+	{
+		dialogueIndex = DataManager.GetDialogueIndex();
+	}
 
 	public void StartDialogue (Dialogue dialogue)
 	{
-		Debug.Log(String.Format("Dialogue: {0} - {1}", dialogue.name, dialogue.sentences[0]));
+		// Debug.Log(String.Format("Dialogue: {0} - {1}", dialogue.name, dialogue.sentences[0]));
 		nameText.text = dialogue.name;
 
 		sentences.Clear();
@@ -55,6 +60,7 @@ public class DialogueManager : MonoBehaviour {
 	public void IncrementDialogueIndex(){
         dialogueTrigger.TriggerDialogue(dialogueIndex);
 		dialogueIndex++;
+		DataManager.SaveDialogueIndex(dialogueIndex);
 	}
 
 	IEnumerator TypeSentence (string sentence)

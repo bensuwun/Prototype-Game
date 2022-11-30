@@ -5,4 +5,5 @@
 public static class DataKeys
 {
     public static string Level = "level";
+    public static string dialogueIndex = "dialogueIndex";
 }
