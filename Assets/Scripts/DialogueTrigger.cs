@@ -11,11 +11,15 @@ public class DialogueTrigger : MonoBehaviour {
 	public void TriggerDialogue(int index)
 	{
 		// Debug.Log(index);
+		// TODO: Setup scene transitions based on dialog index
+		// 		 use code below to transition to Battle Scene
+		// StartCoroutine(CustomSceneManager.LoadAsyncAdditiveScene(SceneNames.BattleScene));
+			
+
 		if(index < dialogue.Count)
 			manager.StartDialogue(dialogue[index]);
 		
-		// TDOO: Setup scene transitions based on dialog index
-		
+
 	}
 
 	public void InitializeDialogues(){
@@ -23,5 +27,4 @@ public class DialogueTrigger : MonoBehaviour {
 		// store file content into List
 
 	}
-
 }

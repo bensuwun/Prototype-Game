@@ -68,6 +68,7 @@ public class CustomTyper : MonoBehaviour
     // Postgame Modal Variables
     public GameObject modal;
     private bool isModalShowing = false;
+    private bool buttonClicked = false; // For avoiding multiple clicks of buttons
 
 
     // Enums
@@ -81,7 +82,7 @@ public class CustomTyper : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         int level = DataManager.GetLevel();
-        
+        Debug.Log("Current Level: " + level);
         instantiateBattle(level);
     }
 
@@ -91,19 +92,20 @@ public class CustomTyper : MonoBehaviour
         float playerHP = 100f;
 
         switch(LEVEL) {
-            case 1:
-                
+            case 0:
+                // TODO: Remove or set Ivy as boss image
+                bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
                 bossHP = 100f;
                 wpmThreshold = 10d;
                 idleTimeLimit = 10f;
                 break;
-            case 2:
-                bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS-1");
+            case 1:
+                bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
                 bossHP = 200f;
                 wpmThreshold = 20d;
                 idleTimeLimit = 6f;
                 break;
-            case 3:
+            case 2:
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/Final Boss");
                 bossHP = 300f;
                 wpmThreshold = 30d;
@@ -519,9 +521,17 @@ public class CustomTyper : MonoBehaviour
             title.GetComponent<TMP_Text>().text = result;
             button.transform.Find("Text").gameObject.GetComponent<TMP_Text>().text = "Continue";
             button.GetComponent<Button>().onClick.AddListener(() => {
-                // TODO: Set scene to next scene
-                // SceneManager.UnloadSceneAsync("BattleScene");
-                // SceneManager.LoadScene("StoryScene");
+                // Update level, go back to story scene
+                if (!buttonClicked) {
+                    buttonClicked = true;
+                    button.GetComponent<Button>().onClick.RemoveAllListeners();
+
+                    // Update player's level
+                    int currentLevel = DataManager.GetLevel();
+                    DataManager.SaveLevel((currentLevel + 1) % 3);
+
+                    StartCoroutine(CustomSceneManager.UnloadSceneAsync("BattleScene"));
+                }
                 Debug.Log("Button pressed");
             });
         }
@@ -529,8 +539,12 @@ public class CustomTyper : MonoBehaviour
             title.GetComponent<TMP_Text>().text = result;
             button.transform.Find("Text").gameObject.GetComponent<TMP_Text>().text = "Retry";
             button.GetComponent<Button>().onClick.AddListener(() => {
-                // TODO: Reset scene with same parameters
-                Debug.Log("Button pressed");
+                buttonClicked = true;
+                button.GetComponent<Button>().onClick.RemoveAllListeners();
+
+                // Reset scene with same parameters
+                StartCoroutine(CustomSceneManager.ReloadAdditiveSceneAsync("BattleScene"));
+                Debug.Log("Retry button pressed");
             });
         }
 
