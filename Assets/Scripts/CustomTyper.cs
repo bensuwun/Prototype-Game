@@ -112,6 +112,7 @@ public class CustomTyper : MonoBehaviour
                 idleTimeLimit = 3f;
                 break;
             default:
+                Debug.LogWarning("[WARNING] Current Level is not in range of allowed values. Current Level = " + level.ToString());
                 break;
         }
         // sets the boss's max HP
@@ -253,17 +254,13 @@ public class CustomTyper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //TODO: Remove DisplayResults here
-        // DisplayResults((int) currWPM, 0, "VICTORY");
         if(boss.isBossDead()) {
-            // TODO: Include accuracy here
             if (!isModalShowing)
-                DisplayResults((int)currWPM, 0, "VICTORY");
+                DisplayResults((int)currWPM, statsCalc.getAccuracy(numCorrectChars, numCharsTyped), "VICTORY");
         }
         else if (player.isPlayerDead()) {
-            // TODO: Include accuracy here
             if (!isModalShowing)
-                DisplayResults((int)currWPM, 0, "DEFEAT");
+                DisplayResults((int)currWPM, statsCalc.getAccuracy(numCorrectChars, numCharsTyped), "DEFEAT");
         }
         else {
             string inputString = Input.inputString;
@@ -379,9 +376,11 @@ public class CustomTyper : MonoBehaviour
             // Update char index and word properties
             charIndex += 1;
             lineCharIndex += 1;
+            wordList[wordIndex].SetCharStatus(wordList[wordIndex].nTyped, true);
             wordList[wordIndex].nTyped += 1;
             wordList[wordIndex].nCorrect += 1;
             numCorrectChars += 1;
+            
 
             boss.TakeDamage(.5f, wpmThreshold, currWPM, comboCount);
 
@@ -403,6 +402,7 @@ public class CustomTyper : MonoBehaviour
             // Update char index and word properties
             charIndex += 1;
             lineCharIndex += 1;
+            wordList[wordIndex].SetCharStatus(wordList[wordIndex].nTyped, false);
             wordList[wordIndex].nTyped += 1;
             player.TakeDamage(1);
             comboCount = 0;
@@ -442,6 +442,12 @@ public class CustomTyper : MonoBehaviour
             // Not excess
             if (lastChar != null) {
                 sb.Insert(caretPosition, lastChar);
+
+                // Check if lastChar was correctly typed
+                if (wordList[wordIndex].IsPrevCharCorrectlyTyped()) {
+                    numCorrectChars -= 1;
+                    wordList[wordIndex].SetCharStatus(wordList[wordIndex].nTyped - 1, false);
+                }
                 wordList[wordIndex].nTyped -= 1;
             }
             
@@ -451,6 +457,7 @@ public class CustomTyper : MonoBehaviour
             // Update word properties
             charIndex -= 1;  
             lineCharIndex -= 1;
+            numCharsTyped -= 1;
         }
         
         UpdateVisualCaretPosition();
@@ -552,8 +559,8 @@ public class CustomTyper : MonoBehaviour
         // Set result values
         WPMResult.GetComponent<TMP_Text>().text = WPM.ToString();
 
-        // TODO: Calculate accuracy
-        accuracyResult.GetComponent<TMP_Text>().text = accuracy.ToString();
+        // Calculate accuracy
+        accuracyResult.GetComponent<TMP_Text>().text = accuracy.ToString() + "%";
 
         // Set modal to active
         modal.SetActive(true);
