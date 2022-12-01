@@ -29,4 +29,8 @@ public class StatsCalc : MonoBehaviour
         double rawWPM = Math.Floor(((numCharsTyped + numSpace) * (60 / currDiff) / 5));
         return("" + rawWPM);
     } 
+
+    public int getAccuracy(int numCorrectChars, int numCharsTyped) {
+        return (int)((double)numCorrectChars / (double)numCharsTyped * 100);
+    }
 }
