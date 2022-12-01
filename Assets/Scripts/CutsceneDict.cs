@@ -17,10 +17,15 @@ public class CutsceneDict
         {"Anyway good luck on whatever you need. I’ll be leaving now.", 9}, // cameron vanish
         {"Is this real? I am not dreaming am I? I really traveled to the future.",10}, // amogus appears
         {"    ", 11}, // amogus fight
-        {"PostAmogus", 11}, // after amogus fight -- stopped here
-        {"     ", 1}, // elder cameron fight
-        {"      ", 1}, // loss from scripted cameron fight
-        {"       ", 1}, // end scene
+        {"PostAmogus", 12}, // after amogus fight 2030 Transition
+        {"     ", 13}, // elder emagres fight
+        {"PostEEmagres",14}, // after eemagres fight
+        {"      ", 15}, // loss from scripted eemagres fight
+        {"PostEE2magres",16}, // after scripted loss
+        {"Trust me you will like it here. Take care.", 17}, // EEmagres portal out
+        {"       ", 18}, // ECameron arrives
+        {"Here let me help you up. Names Cameron btw.", 19}, //Ecameron helps
+        {"        ", 20}, // end scene
 
     };
     

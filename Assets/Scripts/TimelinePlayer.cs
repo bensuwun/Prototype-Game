@@ -32,11 +32,22 @@ public class TimelinePlayer : MonoBehaviour
     {
         // int level = DataManager.GetLevel();
         int level = DataManager.GetLevel();
-        if(level == 1) 
+        if(level == 1){
             PlayTimeline("Intro");
-        else if(level == 2){
+        }else if(level == 2){
             PlayTimeline("PostTutorial");
-        }else if(level == 3)
+        }else if(level == 3){
             PlayTimeline("PostAmogus");
+        }else if(level == 4){
+            PlayTimeline("PostEEmagres");
+        }else if(level == 5){
+            PlayTimeline("PostEE2magres");
+        }
+
+        testCutscenes();
+    }
+
+    void testCutscenes(){
+        // directors[19].Play();
     }
 }
