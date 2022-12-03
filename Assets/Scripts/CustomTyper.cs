@@ -96,7 +96,7 @@ public class CustomTyper : MonoBehaviour
 
         int level = DataManager.GetLevel();
         Debug.Log("Current Level: " + level);
-        instantiateBattle(1);
+        instantiateBattle(level);
     }
 
     public void instantiateBattle(int level) {
