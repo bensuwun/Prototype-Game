@@ -848,6 +848,7 @@ GameObject:
   - component: {fileID: 335988081}
   - component: {fileID: 335988083}
   - component: {fileID: 335988082}
+  - component: {fileID: 335988084}
   m_Layer: 5
   m_Name: Boss
   m_TagString: Untagged
@@ -895,7 +896,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 77e4cd8568e36684e85b7086a1d805ab, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6d89ad3054f5b2542a730250214a5053, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -913,6 +914,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335988080}
   m_CullTransparentMesh: 1
+--- !u!95 &335988084
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335988080}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 18a662497e6808244b4156433b249aa2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &357527684
 GameObject:
   m_ObjectHideFlags: 0
@@ -1372,6 +1393,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1445,6 +1467,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &519420033
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ee0fbce040814ae46a317a2f4685e392, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &544219092
 GameObject:
   m_ObjectHideFlags: 0
@@ -3067,6 +3109,7 @@ MonoBehaviour:
   wordOutput2: {fileID: 1968282020}
   wordOutput3: {fileID: 1724127293}
   bossImage: {fileID: 335988082}
+  bossAnimator: {fileID: 335988084}
   sceneImage: {fileID: 799346937}
   currWPMText: {fileID: 1976949886}
   currAccText: {fileID: 2013178368}

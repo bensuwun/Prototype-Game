@@ -20,6 +20,7 @@ public class CustomTyper : MonoBehaviour
 
     // Boss Image
     public Image bossImage;
+    public Animator bossAnimator;
     public Image sceneImage;
     // Current WPM
     public TextMeshProUGUI currWPMText;
@@ -95,7 +96,7 @@ public class CustomTyper : MonoBehaviour
 
         int level = DataManager.GetLevel();
         Debug.Log("Current Level: " + level);
-        instantiateBattle(4);
+        instantiateBattle(1);
     }
 
     public void instantiateBattle(int level) {
@@ -116,6 +117,7 @@ public class CustomTyper : MonoBehaviour
             case 2:
                 sceneImage.sprite = Resources.Load<Sprite>("Sprites/Backgrounds/Boss Battle/Library Boss Battle");
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
+                bossAnimator.SetBool("AMOGUS", true);
                 bossHP = 200f;
                 wpmThreshold = 20d;
                 idleTimeLimit = 4f;
@@ -124,6 +126,7 @@ public class CustomTyper : MonoBehaviour
             case 3:
                 sceneImage.sprite = Resources.Load<Sprite>("Sprites/Backgrounds/Boss Battle/Busy Street Boss Battle");
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/Final Boss");
+                bossAnimator.SetBool("Old Emagres", true);
                 bossHP = 250f;
                 wpmThreshold = 30d;
                 idleTimeLimit = 2f;
@@ -132,6 +135,7 @@ public class CustomTyper : MonoBehaviour
             case 4:
                 sceneImage.sprite = Resources.Load<Sprite>("Sprites/Backgrounds/Boss Battle/Busy Street Boss Battle");
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/Final Boss idle");
+                bossAnimator.SetBool("Rematch Old Emagres", true);
                 bossHP = 999999f;
                 wpmThreshold = 9999d;
                 idleTimeLimit = 0.3f;
