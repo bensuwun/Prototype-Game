@@ -8,7 +8,7 @@ public class CutsceneDict
         {"Intro", 0}, // intro
         {"If only mom and dad...", 1}, // trip
         {"What is this thing?", 2}, // portal
-        {"I’d appreciate that Miss Ivy, my name is Emagres, pleased to meet you.", 3}, // ivy house
+        {"my name is Emagres, pleased to meet you.", 3}, // ivy house
         {" ", 4}, // tutorial boss
         {"PostTutorial", 5}, // after tutorial
         {"  ", 6}, // 2010 transition

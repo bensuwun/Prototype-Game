@@ -90,7 +90,7 @@ public class CustomTyper : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        DataManager.SaveLevel(1);
+        // DataManager.SaveLevel(1);
         int level = DataManager.GetLevel();
         Debug.Log("Current Level: " + level);
         instantiateBattle(level);
@@ -106,6 +106,7 @@ public class CustomTyper : MonoBehaviour
                 // TODO: Remove or set Ivy as boss image
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
                 bossHP = 100f;
+                bossHP = 5f;
                 wpmThreshold = 10d;
                 idleTimeLimit = 10f;
                 soundManager.PlayBGM(level);
@@ -113,6 +114,7 @@ public class CustomTyper : MonoBehaviour
             case 2:
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
                 bossHP = 200f;
+                bossHP = 5f;
                 wpmThreshold = 20d;
                 idleTimeLimit = 6f;
                 soundManager.PlayBGM(level);
@@ -120,6 +122,7 @@ public class CustomTyper : MonoBehaviour
             case 3:
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/Final Boss");
                 bossHP = 300f;
+                bossHP = 5f;
                 wpmThreshold = 30d;
                 idleTimeLimit = 3f;
                 soundManager.PlayBGM(level);
@@ -553,7 +556,7 @@ public class CustomTyper : MonoBehaviour
 
                     // Update player's level
                     int currentLevel = DataManager.GetLevel();
-                    int nextLevel = currentLevel == 3 ? 1 : currentLevel + 1;
+                    int nextLevel = currentLevel == 5 ? 1 : currentLevel + 1;
                     DataManager.SaveLevel(nextLevel);
 
                     SceneManager.LoadScene("StoryScene");

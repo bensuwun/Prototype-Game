@@ -17,7 +17,7 @@ public class AudioPlayer : MonoBehaviour
             StopBGM();
             BGMAudioSource.clip = BGMAudioClips[idxAudio];
             BGMAudioSource.loop = true;
-            BGMAudioSource.Play();
+            BGMAudioSource.PlayDelayed(2f);
         }
     }
     public void StopBGM() {
