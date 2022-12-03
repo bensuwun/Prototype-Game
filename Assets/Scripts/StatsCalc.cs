@@ -31,6 +31,10 @@ public class StatsCalc : MonoBehaviour
     } 
 
     public int getAccuracy(int numCorrectChars, int numCharsTyped) {
+        // Start with 100%
+        if (numCharsTyped == 0) {
+            return 100;
+        }
         return (int)((double)numCorrectChars / (double)numCharsTyped * 100);
     }
 }
