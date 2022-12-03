@@ -1001,7 +1001,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3271557119
+    rgba: 16777215
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1269,7 +1269,7 @@ MonoBehaviour:
       sex marriage???'
   - name: Emagres
     sentences:
-    - "Is this real? I am not dreaming am I? I really traveled to the future.\r"
+    - Is this real? I am not dreaming am I? I really traveled to the future.
   - name: Amogus
     sentences:
     - You do not belong here.
@@ -1453,6 +1453,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 276625224}
   m_CullTransparentMesh: 1
+--- !u!1 &290937035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 290937036}
+  - component: {fileID: 290937037}
+  m_Layer: 0
+  m_Name: DeviceAppears
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &290937036
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 290937035}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2147345547}
+  m_RootOrder: 21
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!320 &290937037
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 290937035}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 389e4800c6e445f44ad50bb84b6fda7e, type: 2}
+  m_InitialState: 0
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 0}
+    value: {fileID: 850093856}
+  - key: {fileID: 0}
+    value: {fileID: 87291203}
+  - key: {fileID: 2178760936168383180, guid: 389e4800c6e445f44ad50bb84b6fda7e, type: 2}
+    value: {fileID: 624350881}
+  - key: {fileID: -3609916498059452723, guid: 389e4800c6e445f44ad50bb84b6fda7e, type: 2}
+    value: {fileID: 624350882}
+  m_ExposedReferences:
+    m_References: []
 --- !u!1 &357434775
 GameObject:
   m_ObjectHideFlags: 0
@@ -3305,6 +3362,8 @@ MonoBehaviour:
   - {fileID: 1408980704}
   - {fileID: 65585985}
   - {fileID: 1174895664}
+  - {fileID: 1324953518}
+  - {fileID: 290937037}
   button: {fileID: 357434777}
 --- !u!4 &1128410957
 Transform:
@@ -3610,6 +3669,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1258928763}
   m_CullTransparentMesh: 1
+--- !u!1 &1324953516
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1324953517}
+  - component: {fileID: 1324953518}
+  m_Layer: 0
+  m_Name: IvyVanishes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1324953517
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324953516}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2147345547}
+  m_RootOrder: 20
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!320 &1324953518
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324953516}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 4ee75b73326feac4fa55658bedf8671b, type: 2}
+  m_InitialState: 0
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: -7087920965348689530, guid: 4ee75b73326feac4fa55658bedf8671b, type: 2}
+    value: {fileID: 3985028}
+  - key: {fileID: 1337093199965847484, guid: 4ee75b73326feac4fa55658bedf8671b, type: 2}
+    value: {fileID: 3985027}
+  m_ExposedReferences:
+    m_References: []
 --- !u!1 &1382235562
 GameObject:
   m_ObjectHideFlags: 0
@@ -3929,9 +4041,9 @@ PlayableDirector:
     value: {fileID: 0}
   - key: {fileID: 8452259336710355505, guid: 0d1137243d914914b9e34c2e0962afb6, type: 2}
     value: {fileID: 0}
-  - key: {fileID: -3498736882687271251, guid: 5473d6fcb58f16d43a9ed399f5501482, type: 2}
+  - key: {fileID: 0}
     value: {fileID: 850093856}
-  - key: {fileID: 6601949034816789858, guid: 5473d6fcb58f16d43a9ed399f5501482, type: 2}
+  - key: {fileID: 0}
     value: {fileID: 87291203}
   - key: {fileID: -3007400518578582693, guid: 5473d6fcb58f16d43a9ed399f5501482, type: 2}
     value: {fileID: 931149442}
@@ -3995,7 +4107,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439364039}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4717,6 +4829,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1857139049}
   m_CullTransparentMesh: 1
+--- !u!1 &1937976977
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1937976978}
+  m_Layer: 0
+  m_Name: EndCredits
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1937976978
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937976977}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2147345547}
+  m_RootOrder: 22
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1953768559
 GameObject:
   m_ObjectHideFlags: 0
@@ -5085,6 +5228,9 @@ Transform:
   - {fileID: 108611475}
   - {fileID: 1408980703}
   - {fileID: 65585984}
+  - {fileID: 1324953517}
+  - {fileID: 290937036}
+  - {fileID: 1937976978}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

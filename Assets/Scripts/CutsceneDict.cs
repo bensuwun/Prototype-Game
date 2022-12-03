@@ -24,8 +24,11 @@ public class CutsceneDict
         {"PostEE2magres",16}, // after scripted loss
         {"Trust me you will like it here. Take care.", 17}, // EEmagres portal out
         {"       ", 18}, // ECameron arrives
-        {"Here let me help you up. Names Cameron btw.", 19}, //Ecameron helps
+        {"Here let me help you up. Names Cameron by the way.", 19}, //Ecameron helps
         {"        ", 20}, // end scene
+        {"Lovely, now you go ahead and practice more while I make up some tea.", 21}, // ivy vanish
+        {"A typewriter, that thing in your bag.", 22} // device appear
+
 
     };
     
