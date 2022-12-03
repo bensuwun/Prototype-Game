@@ -17,10 +17,4 @@ public class DialogueTrigger : MonoBehaviour {
 		
 
 	}
-
-	public void InitializeDialogues(){
-		// read file
-		// store file content into List
-
-	}
 }
