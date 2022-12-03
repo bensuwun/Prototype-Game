@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class LoadNextScene : MonoBehaviour
 {
-    private int level = 1;
     void OnEnable()
     {
         PlayBattleScene();

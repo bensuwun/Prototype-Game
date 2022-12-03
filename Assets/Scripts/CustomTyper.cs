@@ -90,7 +90,6 @@ public class CustomTyper : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        DataManager.SaveLevel(1);
         int level = DataManager.GetLevel();
         Debug.Log("Current Level: " + level);
         instantiateBattle(level);
@@ -103,8 +102,8 @@ public class CustomTyper : MonoBehaviour
 
         switch(LEVEL) {
             case 1:
-                // TODO: Remove or set Ivy as boss image
-                bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
+                // Remove or set Ivy as boss image
+                bossImage.color = new Color32((byte)bossImage.color.r, (byte)bossImage.color.g, (byte)bossImage.color.b, 0);
                 bossHP = 100f;
                 wpmThreshold = 10d;
                 idleTimeLimit = 10f;
@@ -114,15 +113,22 @@ public class CustomTyper : MonoBehaviour
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
                 bossHP = 200f;
                 wpmThreshold = 20d;
-                idleTimeLimit = 6f;
+                idleTimeLimit = 4f;
                 soundManager.PlayBGM(level);
                 break;
             case 3:
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/Final Boss");
                 bossHP = 300f;
                 wpmThreshold = 30d;
-                idleTimeLimit = 3f;
+                idleTimeLimit = 2f;
                 soundManager.PlayBGM(level);
+                break;
+            case 4:
+                bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/Final Boss idle");
+                bossHP = 999999f;
+                wpmThreshold = 9999d;
+                idleTimeLimit = 0.3f;
+                soundManager.PlayBGM(3); // same as previous level
                 break;
             default:
                 Debug.LogWarning("[WARNING] Current Level is not in range of allowed values. Current Level = " + level.ToString());
@@ -553,7 +559,7 @@ public class CustomTyper : MonoBehaviour
 
                     // Update player's level
                     int currentLevel = DataManager.GetLevel();
-                    int nextLevel = currentLevel == 3 ? 1 : currentLevel + 1;
+                    int nextLevel = currentLevel == 4 ? 1 : currentLevel + 1;
                     DataManager.SaveLevel(nextLevel);
 
                     SceneManager.LoadScene("StoryScene");

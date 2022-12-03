@@ -304,7 +304,11 @@ public class Modifiers : MonoBehaviour
         StartCoroutine(ObtainDebuffAfterTime(debuffCooldownDuration));
     }
 
-    public void SetBuffActive(int index ,bool isActive){
+    public void SetBuffActive(int index, bool isActive){
+        GameObject keybindObject = modifiers[index].transform.Find("Keybind").gameObject;
+        TMP_Text keybindText = keybindObject.GetComponent<TMP_Text>();
+
         modifiers[index].color = isActive ? activeColor : inactiveColor;
+        keybindText.color = isActive ? activeColor : inactiveColor;
     }
 }
