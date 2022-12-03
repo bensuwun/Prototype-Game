@@ -22,10 +22,11 @@ public class CustomTyper : MonoBehaviour
     public Image bossImage;
     // Current WPM
     public TextMeshProUGUI currWPMText;
+    public TextMeshProUGUI currAccText;
 
     public TextMeshProUGUI comboCounterText;
     public TextMeshProUGUI comboText;
-
+    public Animator comboAnimator;
     public WordBank wordBank = null;
     public StatsCalc statsCalc = null;
     public Player player = null;
@@ -73,6 +74,7 @@ public class CustomTyper : MonoBehaviour
     public BattleSoundManager soundManager;
 
     // Postgame Modal Variables
+    public GameObject PanelModal;
     public GameObject modal;
     private bool isModalShowing = false;
     private bool buttonClicked = false; // For avoiding multiple clicks of buttons
@@ -139,11 +141,12 @@ public class CustomTyper : MonoBehaviour
 
         // show current WPM to 0
         currWPMText.text = "" + currWPM;
+        currAccText.text = String.Format("100%");
         comboCounterText.text = "";
         comboText.text = "";
 
          // Display current WPM on screen
-        StartCoroutine(checkWPM());
+        StartCoroutine(checkWPMAndAccuracy());
         StartCoroutine(checkIdle());
         StartCoroutine(updateCombo());
         StartCoroutine(ComboSFXPlayer());
@@ -579,7 +582,7 @@ public class CustomTyper : MonoBehaviour
         accuracyResult.GetComponent<TMP_Text>().text = accuracy.ToString() + "%";
 
         // Set modal to active
-        modal.SetActive(true);
+        PanelModal.SetActive(true);
     }
 
     public PlayerInventory GetInventory(){
@@ -594,10 +597,11 @@ public class CustomTyper : MonoBehaviour
     }
 
     // sets the WPM
-    private IEnumerator checkWPM() {
+    private IEnumerator checkWPMAndAccuracy() {
         while (true) {
             currWPM = statsCalc.getCurrWPM(numCorrectChars, numSpace);
             currWPMText.text = "" + currWPM;
+            currAccText.text = String.Format("{0}%", statsCalc.getAccuracy(numCorrectChars, numCharsTyped));
             yield return null;
         }
     }
@@ -644,12 +648,12 @@ public class CustomTyper : MonoBehaviour
                 text = "";
             }
 
-            if (comboCount > 0) textColor = "white";
-            if (comboCount >= 10) textColor = "#00a0ff";
-            if (comboCount >= 20) textColor = "#24e100";
-            if (comboCount >= 30) textColor = "#ffe300";
-            if (comboCount >= 40) textColor = "#ff7f1c";
-            if (comboCount >= 50) textColor = "#ff3af2";
+            if (comboCount > 0) textColor = ComboInfo.comboColor0;
+            if (comboCount >= ComboInfo.combo1) textColor = ComboInfo.comboColor1;
+            if (comboCount >= ComboInfo.combo2) textColor = ComboInfo.comboColor2;
+            if (comboCount >= ComboInfo.combo3) textColor = ComboInfo.comboColor3;
+            if (comboCount >= ComboInfo.combo4) textColor = ComboInfo.comboColor4;
+            if (comboCount >= ComboInfo.combo5) textColor = ComboInfo.comboColor5;
 
             if (comboCount % 35 == 0 && comboCount > 0){
                 inventory.clearDebuffFlag = true;
@@ -680,23 +684,29 @@ public class CustomTyper : MonoBehaviour
 
     private IEnumerator ComboSFXPlayer() {
         while (true) {
-            if (comboCount == 10 && !debounceCombos[0]) {
+            if (comboCount == ComboInfo.combo1 && !debounceCombos[0]) {
                 debounceCombos[0] = true;
+                comboAnimator.SetTrigger("Pulse");
                 soundManager.PlaySFXCombo(1);
             }
-            else if (comboCount == 20 && !debounceCombos[1]) {
+            else if (comboCount == ComboInfo.combo2 && !debounceCombos[1]) {
+                comboAnimator.SetTrigger("Pulse");
                 debounceCombos[1] = true;
                 soundManager.PlaySFXCombo(2);
             }
-            else if (comboCount == 30 && !debounceCombos[2]) {
+            else if (comboCount == ComboInfo.combo3 && !debounceCombos[2]) {
+                comboAnimator.SetTrigger("Pulse");
                 debounceCombos[2] = true;
                 soundManager.PlaySFXCombo(3);
             }
-            else if (comboCount == 40 && !debounceCombos[3]) {
+            else if (comboCount == ComboInfo.combo4 && !debounceCombos[3]) {
+                comboAnimator.SetTrigger("Pulse");
                 debounceCombos[3] = true;
                 soundManager.PlaySFXCombo(4);
+                
             }
-            else if (comboCount == 50 && !debounceCombos[4]) {
+            else if (comboCount == ComboInfo.combo5 && !debounceCombos[4]) {
+                comboAnimator.SetTrigger("Pulse");
                 debounceCombos[4] = true;
                 soundManager.PlaySFXCombo(5);
             }

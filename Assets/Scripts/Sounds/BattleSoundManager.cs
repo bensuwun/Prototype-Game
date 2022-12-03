@@ -47,7 +47,7 @@ public class BattleSoundManager : MonoBehaviour{
             BGMAudioSource.clip = SFXRoundEndClips[0];
             BGMAudioSource.Play();
         }
-        else if (result.Equals("DEFEAT")) {
+        else if (result.Equals("DEFEAT")) { 
             BGMAudioSource.PlayOneShot(SFXRoundEndClips[1]);
         }
         else {
