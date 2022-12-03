@@ -32,6 +32,7 @@ public class TimelinePlayer : MonoBehaviour
     {
         // int level = DataManager.GetLevel();
         int level = DataManager.GetLevel();
+        Debug.Log(string.Format("level: {0}", level));
         if(level == 1){
             PlayTimeline("Intro");
         }else if(level == 2){

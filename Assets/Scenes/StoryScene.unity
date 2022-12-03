@@ -1001,7 +1001,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 3271557119
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1304,7 +1304,6 @@ MonoBehaviour:
     - Who I am is not important.
     - Even though I know what you will do I have to ask you to hand over your keyboard
       right there.
-    - '     '
   - name: Emagres
     sentences:
     - What? No!
@@ -1905,17 +1904,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 483081322}
-  m_LocalRotation: {x: -0.048294686, y: 0.03859796, z: -0.62312853, w: -0.7796722}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1691800165}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: -0.00001365917, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -101, y: 114.00001}
+  m_AnchoredPosition: {x: -285.2449, y: 114.00001}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &483081324
@@ -4172,6 +4171,8 @@ PlayableDirector:
     value: {fileID: 850093856}
   - key: {fileID: 434205912395396566, guid: c900a62fafa9f474eb3c4e83f4e27ece, type: 2}
     value: {fileID: 87291203}
+  - key: {fileID: 5631273581411812680, guid: c900a62fafa9f474eb3c4e83f4e27ece, type: 2}
+    value: {fileID: 3985028}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &1673445950
@@ -4234,7 +4235,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6ed5a91758f080248ada5d3aac901e34, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 336a0542d3a44fc4aa18bc6fee8f2365, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
