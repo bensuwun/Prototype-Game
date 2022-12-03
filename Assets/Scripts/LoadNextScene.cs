@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class LoadNextScene : MonoBehaviour
 {
-    private int level = 1;
     void OnEnable()
     {
         PlayBattleScene();
@@ -13,5 +12,11 @@ public class LoadNextScene : MonoBehaviour
     void PlayBattleScene(){
         // DataManager.SaveLevel(level);
         SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
+    }
+
+    public static IEnumerator LoadBattleSceneAfterInterval(int duration) {
+        yield return new WaitForSeconds(duration);
+
+        SceneManager.LoadScene("StoryScene");
     }
 }

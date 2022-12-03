@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -8,6 +10,7 @@ public class Player : MonoBehaviour
     public float currentHealth;
 
     public HealthBar healthBar;
+    public TMP_Text healthText;
 
     bool isRunning = false;
 
@@ -31,6 +34,7 @@ public class Player : MonoBehaviour
     public void setMaxHP(float maxHP) {
         maxHealth = maxHP;
         currentHealth = maxHealth;
+        healthText.text = String.Format("{0} / {0}", maxHP); 
         healthBar.SetMaxHealth(maxHealth);
     }
 
@@ -38,7 +42,7 @@ public class Player : MonoBehaviour
     {
         if (currentHealth > 0)
             currentHealth -= damage;
-
+        healthText.text = String.Format("{0} / {1}", (int)currentHealth, maxHealth);
         healthBar.SetHealth(currentHealth);
     }
 
@@ -47,6 +51,7 @@ public class Player : MonoBehaviour
         if(currentHealth != maxHealth)
             currentHealth += increase;
         
+        healthText.text = String.Format("{0} / {1}", (int)currentHealth, maxHealth);
         healthBar.SetHealth(currentHealth);
     }
 

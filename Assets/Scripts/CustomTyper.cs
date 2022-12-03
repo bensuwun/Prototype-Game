@@ -20,6 +20,8 @@ public class CustomTyper : MonoBehaviour
 
     // Boss Image
     public Image bossImage;
+    public Animator bossAnimator;
+    public Image sceneImage;
     // Current WPM
     public TextMeshProUGUI currWPMText;
     public TextMeshProUGUI currAccText;
@@ -78,6 +80,7 @@ public class CustomTyper : MonoBehaviour
     public GameObject modal;
     private bool isModalShowing = false;
     private bool buttonClicked = false; // For avoiding multiple clicks of buttons
+    public Animator FadeoutAnimator;
 
 
     // Enums
@@ -90,7 +93,6 @@ public class CustomTyper : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        // DataManager.SaveLevel(1);
         int level = DataManager.GetLevel();
         Debug.Log("Current Level: " + level);
         instantiateBattle(level);
@@ -103,29 +105,41 @@ public class CustomTyper : MonoBehaviour
 
         switch(LEVEL) {
             case 1:
-                // TODO: Remove or set Ivy as boss image
-                bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
-                bossHP = 100f;
-                bossHP = 5f;
+                // Remove or set Ivy as boss image
+                sceneImage.sprite = Resources.Load<Sprite>("Sprites/Backgrounds/Ivy_s Home");
+                bossImage.color = new Color32((byte)bossImage.color.r, (byte)bossImage.color.g, (byte)bossImage.color.b, 0);
+                bossHP = 60f;
                 wpmThreshold = 10d;
-                idleTimeLimit = 10f;
+                idleTimeLimit = 15f;
                 soundManager.PlayBGM(level);
                 break;
             case 2:
+                sceneImage.sprite = Resources.Load<Sprite>("Sprites/Backgrounds/Boss Battle/Library Boss Battle");
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
+                bossAnimator.SetBool("AMOGUS", true);
                 bossHP = 200f;
                 bossHP = 5f;
                 wpmThreshold = 20d;
-                idleTimeLimit = 6f;
+                idleTimeLimit = 4f;
                 soundManager.PlayBGM(level);
                 break;
             case 3:
+                sceneImage.sprite = Resources.Load<Sprite>("Sprites/Backgrounds/Boss Battle/Busy Street Boss Battle");
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/Final Boss");
-                bossHP = 300f;
-                bossHP = 5f;
+                bossAnimator.SetBool("Old Emagres", true);
+                bossHP = 250f;
                 wpmThreshold = 30d;
-                idleTimeLimit = 3f;
+                idleTimeLimit = 2f;
                 soundManager.PlayBGM(level);
+                break;
+            case 4:
+                sceneImage.sprite = Resources.Load<Sprite>("Sprites/Backgrounds/Boss Battle/Busy Street Boss Battle");
+                bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/Final Boss idle");
+                bossAnimator.SetBool("Rematch Old Emagres", true);
+                bossHP = 999999f;
+                wpmThreshold = 9999d;
+                idleTimeLimit = 0.3f;
+                soundManager.PlayBGM(3); // same as previous level
                 break;
             default:
                 Debug.LogWarning("[WARNING] Current Level is not in range of allowed values. Current Level = " + level.ToString());
@@ -281,7 +295,15 @@ public class CustomTyper : MonoBehaviour
                 
         }
         else if (player.isPlayerDead()) {
-            if (!isModalShowing) {
+            if (LEVEL == 4) {
+                // Fade out of scene
+                StopAllCoroutines();
+                soundManager.PlayBGMResult("DEFEAT", false);
+                FadeoutAnimator.SetTrigger("Fadeout");
+                StartCoroutine(FadeOutSound.FadeOut(soundManager.BGMAudioSource, 4));
+                
+            }
+            else if (!isModalShowing) {
                 StopAllCoroutines();
                 DisplayResults((int)currWPM, statsCalc.getAccuracy(numCorrectChars, numCharsTyped), "DEFEAT");
             }
@@ -556,7 +578,7 @@ public class CustomTyper : MonoBehaviour
 
                     // Update player's level
                     int currentLevel = DataManager.GetLevel();
-                    int nextLevel = currentLevel == 5 ? 1 : currentLevel + 1;
+                    int nextLevel = currentLevel == 4 ? 1 : currentLevel + 1;
                     DataManager.SaveLevel(nextLevel);
 
                     SceneManager.LoadScene("StoryScene");
