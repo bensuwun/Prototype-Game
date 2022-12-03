@@ -13,4 +13,10 @@ public class LoadNextScene : MonoBehaviour
         // DataManager.SaveLevel(level);
         SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
     }
+
+    public static IEnumerator LoadBattleSceneAfterInterval(int duration) {
+        yield return new WaitForSeconds(duration);
+
+        SceneManager.LoadScene("StoryScene");
+    }
 }

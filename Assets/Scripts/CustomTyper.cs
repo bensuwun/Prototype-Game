@@ -20,6 +20,7 @@ public class CustomTyper : MonoBehaviour
 
     // Boss Image
     public Image bossImage;
+    public Image sceneImage;
     // Current WPM
     public TextMeshProUGUI currWPMText;
     public TextMeshProUGUI currAccText;
@@ -78,6 +79,7 @@ public class CustomTyper : MonoBehaviour
     public GameObject modal;
     private bool isModalShowing = false;
     private bool buttonClicked = false; // For avoiding multiple clicks of buttons
+    public Animator FadeoutAnimator;
 
 
     // Enums
@@ -90,9 +92,10 @@ public class CustomTyper : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
+
         int level = DataManager.GetLevel();
         Debug.Log("Current Level: " + level);
-        instantiateBattle(level);
+        instantiateBattle(4);
     }
 
     public void instantiateBattle(int level) {
@@ -103,6 +106,7 @@ public class CustomTyper : MonoBehaviour
         switch(LEVEL) {
             case 1:
                 // Remove or set Ivy as boss image
+                sceneImage.sprite = Resources.Load<Sprite>("Sprites/Backgrounds/Ivy_s Home");
                 bossImage.color = new Color32((byte)bossImage.color.r, (byte)bossImage.color.g, (byte)bossImage.color.b, 0);
                 bossHP = 60f;
                 wpmThreshold = 10d;
@@ -110,6 +114,7 @@ public class CustomTyper : MonoBehaviour
                 soundManager.PlayBGM(level);
                 break;
             case 2:
+                sceneImage.sprite = Resources.Load<Sprite>("Sprites/Backgrounds/Boss Battle/Library Boss Battle");
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
                 bossHP = 200f;
                 wpmThreshold = 20d;
@@ -117,6 +122,7 @@ public class CustomTyper : MonoBehaviour
                 soundManager.PlayBGM(level);
                 break;
             case 3:
+                sceneImage.sprite = Resources.Load<Sprite>("Sprites/Backgrounds/Boss Battle/Busy Street Boss Battle");
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/Final Boss");
                 bossHP = 250f;
                 wpmThreshold = 30d;
@@ -124,6 +130,7 @@ public class CustomTyper : MonoBehaviour
                 soundManager.PlayBGM(level);
                 break;
             case 4:
+                sceneImage.sprite = Resources.Load<Sprite>("Sprites/Backgrounds/Boss Battle/Busy Street Boss Battle");
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/Final Boss idle");
                 bossHP = 999999f;
                 wpmThreshold = 9999d;
@@ -284,7 +291,15 @@ public class CustomTyper : MonoBehaviour
                 
         }
         else if (player.isPlayerDead()) {
-            if (!isModalShowing) {
+            if (LEVEL == 4) {
+                // Fade out of scene
+                StopAllCoroutines();
+                soundManager.PlayBGMResult("DEFEAT", false);
+                FadeoutAnimator.SetTrigger("Fadeout");
+                StartCoroutine(FadeOutSound.FadeOut(soundManager.BGMAudioSource, 4));
+                
+            }
+            else if (!isModalShowing) {
                 StopAllCoroutines();
                 DisplayResults((int)currWPM, statsCalc.getAccuracy(numCorrectChars, numCharsTyped), "DEFEAT");
             }

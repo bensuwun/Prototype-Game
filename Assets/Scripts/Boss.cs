@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using TMPro;
 
 public class Boss : MonoBehaviour
 {
@@ -8,10 +8,12 @@ public class Boss : MonoBehaviour
     public float currentHealth;
 
     public Healthbar_boss healthBar;
+    public TMP_Text healthText;
 
     public void setMaxHP(float maxHP) {
         maxHealth = maxHP;
         currentHealth = maxHealth;
+        healthText.text = String.Format("{0} / {0}", maxHP);
         healthBar.SetMaxHealth(maxHealth);
     }
 
@@ -24,6 +26,7 @@ public class Boss : MonoBehaviour
                 }   
                 else currentHealth -= damage;
                 print("Damage was dealt to boss");
+                healthText.text = String.Format("{0} / {1}", (int)currentHealth, maxHealth);
                 healthBar.SetHealth(currentHealth);
             }
             

@@ -39,8 +39,11 @@ public class BattleSoundManager : MonoBehaviour{
     }
 
     // Post-battle BGM
-    public void PlayBGMResult(string result) {
-        StopBGM();
+    public void PlayBGMResult(string result, bool endBGM = true) {
+        if (endBGM) {
+            StopBGM();
+        }
+        
         StopSFXLowHP();
         if (result.Equals("VICTORY")) {
             BGMAudioSource.loop = true;
