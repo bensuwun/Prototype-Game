@@ -5123,6 +5123,7 @@ GameObject:
   - component: {fileID: 1773170840}
   - component: {fileID: 1773170842}
   - component: {fileID: 1773170841}
+  - component: {fileID: 1773170843}
   m_Layer: 5
   m_Name: EndScreen
   m_TagString: Untagged
@@ -5191,6 +5192,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773170839}
   m_CullTransparentMesh: 1
+--- !u!95 &1773170843
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773170839}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1791708773
 GameObject:
   m_ObjectHideFlags: 0
@@ -5398,6 +5419,8 @@ PlayableDirector:
     value: {fileID: 1773170839}
   - key: {fileID: 4819524022579994716, guid: 7c0970f8c86cc0d4e9a02c7ba841783f, type: 2}
     value: {fileID: 1967592856}
+  - key: {fileID: 4801502075383446666, guid: 7c0970f8c86cc0d4e9a02c7ba841783f, type: 2}
+    value: {fileID: 1773170843}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &1945490943
