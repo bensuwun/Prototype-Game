@@ -25,7 +25,6 @@ public class DialogueManager : MonoBehaviour {
 	
 	void Awake()
 	{
-		DataManager.SaveDialogueIndex(0);
 		dialogueIndex = DataManager.GetDialogueIndex();
 		Debug.Log(String.Format("Dialogue Index: {0}", dialogueIndex));
 	}
