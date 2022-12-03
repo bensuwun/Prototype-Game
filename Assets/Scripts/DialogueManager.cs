@@ -13,6 +13,7 @@ public class DialogueManager : MonoBehaviour {
 	private Queue<string> sentences = new Queue<string>();
     public DialogueTrigger dialogueTrigger;
 	public TimelinePlayer timeline;
+	public AudioPlayer audioPlayer;
 	private int dialogueIndex = 0;
 	public Button button;
 
@@ -73,6 +74,7 @@ public class DialogueManager : MonoBehaviour {
 			if(String.Equals(dialogueText.text,sentence)){
 				Debug.Log(String.Format("Marker: {0}", sentence));
 				timeline.PlayTimeline(sentence);
+				audioPlayer.PlayBGM(sentence);
 			}
 			yield return null;
 		}
