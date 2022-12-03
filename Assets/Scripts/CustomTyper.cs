@@ -41,8 +41,7 @@ public class CustomTyper : MonoBehaviour
     public GameObject caret;
     private StringBuilder sb;
     public Modifiers modifier;
-    public AudioSource audioSource;
-    public List<AudioClip> audioClips;
+    
 
     private double currWPM = 0d;
     private double wpmThreshold = 0d;
@@ -66,6 +65,12 @@ public class CustomTyper : MonoBehaviour
     private float idleTimeLimit = 5f;
 
     private int comboCount = 0;
+    // Sound variables
+    List<bool> debounceCombos = new List<bool>() {
+        false, false, false, false, false
+    };
+    bool debounceSFXLowHP = false;
+    public BattleSoundManager soundManager;
 
     // Postgame Modal Variables
     public GameObject modal;
@@ -101,21 +106,21 @@ public class CustomTyper : MonoBehaviour
                 bossHP = 100f;
                 wpmThreshold = 10d;
                 idleTimeLimit = 10f;
-                audioSource.PlayOneShot(audioClips[1]);
+                soundManager.PlayBGM(level);
                 break;
             case 2:
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
                 bossHP = 200f;
                 wpmThreshold = 20d;
                 idleTimeLimit = 6f;
-                audioSource.PlayOneShot(audioClips[2]);
+                soundManager.PlayBGM(level);
                 break;
             case 3:
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/Final Boss");
                 bossHP = 300f;
                 wpmThreshold = 30d;
                 idleTimeLimit = 3f;
-                audioSource.PlayOneShot(audioClips[1]);
+                soundManager.PlayBGM(level);
                 break;
             default:
                 Debug.LogWarning("[WARNING] Current Level is not in range of allowed values. Current Level = " + level.ToString());
@@ -141,6 +146,8 @@ public class CustomTyper : MonoBehaviour
         StartCoroutine(checkWPM());
         StartCoroutine(checkIdle());
         StartCoroutine(updateCombo());
+        StartCoroutine(ComboSFXPlayer());
+        StartCoroutine(checkLowHP());
     }
 
     IEnumerator InitializeWordLists(){
@@ -261,12 +268,18 @@ public class CustomTyper : MonoBehaviour
     void Update()
     {
         if(boss.isBossDead()) {
-            if (!isModalShowing)
+            if (!isModalShowing){
+                StopAllCoroutines();
                 DisplayResults((int)currWPM, statsCalc.getAccuracy(numCorrectChars, numCharsTyped), "VICTORY");
+            }
+                
         }
         else if (player.isPlayerDead()) {
-            if (!isModalShowing)
+            if (!isModalShowing) {
+                StopAllCoroutines();
                 DisplayResults((int)currWPM, statsCalc.getAccuracy(numCorrectChars, numCharsTyped), "DEFEAT");
+            }
+                
         }
         else {
             string inputString = Input.inputString;
@@ -298,8 +311,6 @@ public class CustomTyper : MonoBehaviour
                     StartCoroutine(SetCurrentWords());
                     ResetIndeces();
                 }
-
-               
             } 
         }
     }
@@ -364,7 +375,7 @@ public class CustomTyper : MonoBehaviour
             charIndex += 1;
             lineCharIndex += 1;
             player.TakeDamage(1);
-            comboCount = 0;
+            ResetCombo();
         }
 
         // Check if input char is correct
@@ -411,7 +422,7 @@ public class CustomTyper : MonoBehaviour
             wordList[wordIndex].SetCharStatus(wordList[wordIndex].nTyped, false);
             wordList[wordIndex].nTyped += 1;
             player.TakeDamage(1);
-            comboCount = 0;
+            ResetCombo();
         }
         
         UpdateVisualCaretPosition();
@@ -467,7 +478,7 @@ public class CustomTyper : MonoBehaviour
         }
         
         UpdateVisualCaretPosition();
-        comboCount = 0;
+        ResetCombo();
     }
 
     /**
@@ -481,7 +492,7 @@ public class CustomTyper : MonoBehaviour
         }
         // Check for premature spacebar (word has not finished yet)
         if (!wordList[wordIndex].IsFullyTyped()) {
-            comboCount = 0;
+            ResetCombo();
             caretPosition += wordList[wordIndex].GetRemainingChars() + 1; /// + 1 for whitespace
             lineCharIndex += wordList[wordIndex].GetRemainingChars(); 
         }
@@ -506,10 +517,6 @@ public class CustomTyper : MonoBehaviour
 
         // Move caret to character position
         caret.transform.localPosition = new Vector3(currentPosition.x, currentPosition.y + 15, 0);
-
-        // Debug.Log(String.Format("Char Index: {0} | Char: {1}", lineCharIndex, charInfo.character));
-        // Debug.Log(String.Format("Char Index 0: | Char: {0}", textInfo.characterInfo[0].character));
-        // Debug.Log("Bottom Left Position: " + currentPosition.ToString());
     }
 
     // Checks if the current line is already finished, return true if done, false if not
@@ -528,6 +535,8 @@ public class CustomTyper : MonoBehaviour
         GameObject accuracyResult = modal.transform.Find("AccuracyResult").gameObject;
         GameObject button = modal.transform.Find("Button").gameObject;
         GameObject title = modal.transform.Find("Title").gameObject;
+
+        soundManager.PlayBGMResult(result);
 
         // Set title, can change color
         if (result.Equals("VICTORY")) {
@@ -552,6 +561,7 @@ public class CustomTyper : MonoBehaviour
         else {
             title.GetComponent<TMP_Text>().text = result;
             button.transform.Find("Text").gameObject.GetComponent<TMP_Text>().text = "Retry";
+
             button.GetComponent<Button>().onClick.AddListener(() => {
                 buttonClicked = true;
                 button.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -576,6 +586,13 @@ public class CustomTyper : MonoBehaviour
         return inventory;
     }
 
+    private void ResetCombo() {
+        comboCount = 0;
+        for(int i = 0; i < debounceCombos.Count; i++) {
+            debounceCombos[i] = false;
+        }
+    }
+
     // sets the WPM
     private IEnumerator checkWPM() {
         while (true) {
@@ -583,7 +600,6 @@ public class CustomTyper : MonoBehaviour
             currWPMText.text = "" + currWPM;
             yield return null;
         }
-        
     }
 
     // checks for idleness and makes the player take damage whenever idle
@@ -591,13 +607,27 @@ public class CustomTyper : MonoBehaviour
         while (true) {
             if (Time.time - lastIdleTime > idleTimeLimit) {
                 player.TakeDamage(10);
-                comboCount = 0;
+                ResetCombo();
                 lastIdleTime = Time.time;
             }
         
             yield return null;
         }
-        
+    }
+
+    // checks if player is low HP to play SFX
+    private IEnumerator checkLowHP() {
+        while (true) {
+            if (player.currentHealth <= 20 && !debounceSFXLowHP) {
+                debounceSFXLowHP = true;        // set debounce to true
+                soundManager.PlaySFXLowHP();
+            }
+            else if (debounceSFXLowHP && player.currentHealth > 20) {
+                debounceSFXLowHP = false;
+                soundManager.StopSFXLowHP();
+            }
+            yield return null;
+        }
     }
 
     private IEnumerator updateCombo() {
@@ -648,4 +678,29 @@ public class CustomTyper : MonoBehaviour
         }
     }
 
+    private IEnumerator ComboSFXPlayer() {
+        while (true) {
+            if (comboCount == 10 && !debounceCombos[0]) {
+                debounceCombos[0] = true;
+                soundManager.PlaySFXCombo(1);
+            }
+            else if (comboCount == 20 && !debounceCombos[1]) {
+                debounceCombos[1] = true;
+                soundManager.PlaySFXCombo(2);
+            }
+            else if (comboCount == 30 && !debounceCombos[2]) {
+                debounceCombos[2] = true;
+                soundManager.PlaySFXCombo(3);
+            }
+            else if (comboCount == 40 && !debounceCombos[3]) {
+                debounceCombos[3] = true;
+                soundManager.PlaySFXCombo(4);
+            }
+            else if (comboCount == 50 && !debounceCombos[4]) {
+                debounceCombos[4] = true;
+                soundManager.PlaySFXCombo(5);
+            }
+            yield return null;
+        }
+    }
 }
