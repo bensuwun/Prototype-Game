@@ -96,7 +96,7 @@ public class CustomTyper : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        int level = DataManager.GetLevel();
+        int level = 1;
         Debug.Log("Current Level: " + level);
         instantiateBattle(level);
         if (level == 1) {
@@ -374,10 +374,12 @@ public class CustomTyper : MonoBehaviour
         2 - backspace
     */
     int CheckInput(char input) {
-        int type = 0;
+        int type = -1;
 
+        if (Char.IsLetter(input))
+            type = 0;
         // spacebar
-        if (input == ' ')
+        else if (input == ' ')
             type = 1;
 
         // backspace
