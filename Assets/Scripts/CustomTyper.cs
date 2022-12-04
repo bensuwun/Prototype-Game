@@ -132,9 +132,9 @@ public class CustomTyper : MonoBehaviour
                 sceneImage.sprite = Resources.Load<Sprite>("Sprites/Backgrounds/Boss Battle/Library Boss Battle");
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
                 bossAnimator.SetBool("AMOGUS", true);
-                bossHP = 200f;
+                bossHP = 150f;
                 wpmThreshold = 20d;
-                idleTimeLimit = 4f;
+                idleTimeLimit = 6f;
                 soundManager.PlayBGM(level);
                 break;
             case 3:
@@ -143,7 +143,7 @@ public class CustomTyper : MonoBehaviour
                 bossAnimator.SetBool("Old Emagres", true);
                 bossHP = 250f;
                 wpmThreshold = 30d;
-                idleTimeLimit = 2f;
+                idleTimeLimit = 3f;
                 soundManager.PlayBGM(level);
                 break;
             case 4:
