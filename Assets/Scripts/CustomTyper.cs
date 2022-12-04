@@ -96,7 +96,7 @@ public class CustomTyper : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        int level = 1;
+        int level = DataManager.GetLevel();
         Debug.Log("Current Level: " + level);
         instantiateBattle(level);
         if (level == 1) {
