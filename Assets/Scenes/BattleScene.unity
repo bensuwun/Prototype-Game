@@ -5693,6 +5693,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 79d12306cce8e904684c4b311201c46d, type: 3}
   - {fileID: 8300000, guid: 9d7a4960f13355f4486dd89a47faf1cb, type: 3}
   - {fileID: 8300000, guid: 4999e75a3c2f57549a01cc033aab26be, type: 3}
+  SFXBuffs:
+  - {fileID: 8300000, guid: 56cad6b0421d07142a5e8185bcf62622, type: 3}
+  - {fileID: 8300000, guid: df20366c87ac98945b8d20e56136174f, type: 3}
+  - {fileID: 8300000, guid: dee2b5e8313315a42852ee9b6677d2c3, type: 3}
   SFXRoundEndClips:
   - {fileID: 8300000, guid: aa45213aeecf2344dae353da6545310a, type: 3}
   - {fileID: 8300000, guid: e0d92d1d3c4096143b7d199ec19a4aae, type: 3}
@@ -6240,6 +6244,7 @@ MonoBehaviour:
   - {fileID: 1724127293}
   textComponents: []
   executingDebuff: 0
+  battleSoundManager: {fileID: 1351302318}
 --- !u!4 &1492312094
 Transform:
   m_ObjectHideFlags: 0

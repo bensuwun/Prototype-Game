@@ -8,10 +8,16 @@ public class BattleSoundManager : MonoBehaviour{
     public AudioSource SFXOtherAudioSource; // For low hp and round end sfx 
     public List<AudioClip> BGMAudioClips;
     public List<AudioClip> SFXCombos;
+    public List<AudioClip> SFXBuffs;
     public List<AudioClip> SFXRoundEndClips;
     public AudioClip SFXLowHP;
 
-    
+    public enum BuffCodes {
+        hp_regen,
+        button_smash,
+        cleanse
+    }
+
     // Play background music in battle scene
     public void PlayBGM(int level) {
         if (level >= 1 && level <= 3) {
@@ -29,6 +35,25 @@ public class BattleSoundManager : MonoBehaviour{
             Debug.Log("Playing sound number " + clipIndex);
             SFXComboAudioSource.PlayOneShot(SFXCombos[clipIndex]);
         }
+    }
+
+    public void PlaySFXBuff(int buffCode) {
+        AudioClip audioClip = SFXBuffs[0];
+        switch(buffCode) {
+            case (int)BuffCodes.hp_regen:
+                audioClip = SFXBuffs[0];
+                break;
+            case (int)BuffCodes.button_smash:
+                audioClip = SFXBuffs[1];
+                break;
+            case (int)BuffCodes.cleanse:
+                audioClip = SFXBuffs[2];
+                break;
+            default:
+                Debug.LogWarning(String.Format("[WARNING] Invalid buffcode {0} given to BattleSoundManager.PlaySFXBuff", buffCode));
+                break;
+        }
+        SFXComboAudioSource.PlayOneShot(audioClip);
     }
 
     // Play low HP SFX (loop) when player's health is low

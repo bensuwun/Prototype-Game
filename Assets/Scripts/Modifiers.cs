@@ -12,7 +12,7 @@ public class Modifiers : MonoBehaviour
     public PlayerInventory inventory = null;
     public WordBank wordBank = null;
     private List<Word> previousWords = null;
-    private bool testing = true;
+    private bool testing = false;
     public WordAnimator wordAnimator = null;
     public List<Image> modifiers; 
     private Color inactiveColor = new Color(0.5f,0.5f,0.5f,1f);
@@ -30,6 +30,7 @@ public class Modifiers : MonoBehaviour
 
     // Debounce variables
     private bool endDebuffRunning = false;
+    public GameObject battleSoundManager;
 
     public enum Buffs{
         HPRegen = 0,
@@ -111,6 +112,7 @@ public class Modifiers : MonoBehaviour
         if(inventory.hpRegenFlag || testing){ // check if player has hp regen buff
             // int n_wpm = Mathf.FloorToInt((float)0.75 * CombineNumber(wpm.GetParsedText().ToIntArray()));
             // int hpRegen = n_wpm > 20 ? 20 : n_wpm;
+            battleSoundManager.SendMessage("PlaySFXBuff", (int)BattleSoundManager.BuffCodes.hp_regen, SendMessageOptions.RequireReceiver);
             player.increaseHealth(15 );
             inventory.hpRegenFlag = false;
             SetBuffActive((int)Buffs.HPRegen, inventory.hpRegenFlag);
@@ -122,6 +124,7 @@ public class Modifiers : MonoBehaviour
         Word newWord = null;
         List<Word> newWords = new List<Word>();
         if(inventory.buttonMashFlag || testing){ // check inventory condition
+            battleSoundManager.SendMessage("PlaySFXBuff", (int)BattleSoundManager.BuffCodes.button_smash);
             foreach (var word in words)
             {
                 newWord = createMashWord("a",word.Text.Length);
@@ -145,6 +148,7 @@ public class Modifiers : MonoBehaviour
 
     void clearDebuffs(){
         if(inventory.clearDebuffFlag || testing){
+            battleSoundManager.SendMessage("PlaySFXBuff", (int)BattleSoundManager.BuffCodes.cleanse);
             inventory.clearDebuffFlag = false;
             inventory.shortSightedFlag = false;
             inventory.armsSpaghettiFlag = false;
