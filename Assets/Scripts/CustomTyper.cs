@@ -82,6 +82,9 @@ public class CustomTyper : MonoBehaviour
     private bool buttonClicked = false; // For avoiding multiple clicks of buttons
     public Animator FadeoutAnimator;
 
+    // Tutorial Panel Variables
+    public GameObject TutorialPanel;
+
 
     // Enums
     private enum Enums {
@@ -96,6 +99,18 @@ public class CustomTyper : MonoBehaviour
         int level = DataManager.GetLevel();
         Debug.Log("Current Level: " + level);
         instantiateBattle(level);
+        if (level == 1) {
+            ShowTutorialModal();
+        }
+        else {
+            BeginBattle();
+        }
+    }
+
+    public void ShowTutorialModal() {
+        TutorialPanel.SetActive(true);
+
+        // Await TutorialManager's message to call BeginBattle()
     }
 
     public void instantiateBattle(int level) {
@@ -118,7 +133,6 @@ public class CustomTyper : MonoBehaviour
                 bossImage.sprite = Resources.Load<Sprite>("Sprites/Characters-bosses/AMOGUS");
                 bossAnimator.SetBool("AMOGUS", true);
                 bossHP = 200f;
-                bossHP = 5f;
                 wpmThreshold = 20d;
                 idleTimeLimit = 4f;
                 soundManager.PlayBGM(level);
@@ -153,14 +167,18 @@ public class CustomTyper : MonoBehaviour
         // sets the words that are displayed
         StartCoroutine(InitializeWordLists());
 
-        // gets the current time
-        statsCalc.getStart();
-
         // show current WPM to 0
         currWPMText.text = "" + currWPM;
         currAccText.text = String.Format("100%");
         comboCounterText.text = "";
         comboText.text = "";
+    }
+
+    public void BeginBattle() {
+        TutorialPanel.SetActive(false);
+
+        // gets the current time
+        statsCalc.getStart();
 
          // Display current WPM on screen
         StartCoroutine(checkWPMAndAccuracy());
@@ -168,6 +186,12 @@ public class CustomTyper : MonoBehaviour
         StartCoroutine(updateCombo());
         StartCoroutine(ComboSFXPlayer());
         StartCoroutine(checkLowHP());
+
+        // Begin debuffs
+        modifier.BeginDebuffs();
+
+        // Begin player's decay
+        player.BeginDecay();
     }
 
     IEnumerator InitializeWordLists(){
@@ -591,12 +615,14 @@ public class CustomTyper : MonoBehaviour
             button.transform.Find("Text").gameObject.GetComponent<TMP_Text>().text = "Retry";
 
             button.GetComponent<Button>().onClick.AddListener(() => {
-                buttonClicked = true;
-                button.GetComponent<Button>().onClick.RemoveAllListeners();
+                if (!buttonClicked) {
+                    buttonClicked = true;
+                    button.GetComponent<Button>().onClick.RemoveAllListeners();
 
-                // Reset scene with same parameters
-                SceneManager.LoadScene("BattleScene");
-                Debug.Log("Retry button pressed");
+                    // Reset scene with same parameters
+                    SceneManager.LoadScene("BattleScene");
+                    Debug.Log("Retry button pressed");
+                } 
             });
         }
 

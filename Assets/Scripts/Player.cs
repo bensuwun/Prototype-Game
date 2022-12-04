@@ -22,7 +22,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        StartCoroutine(healthDecay(currentHealth));
 
         // to be changed adjusted -> Press spacebar to take damage for now
         if (Input.GetKeyDown(KeyCode.Backspace)) 
@@ -30,6 +29,11 @@ public class Player : MonoBehaviour
             TakeDamage(3);
         } 
     }
+
+    public void BeginDecay() {
+        StartCoroutine(healthDecay(currentHealth));
+    }
+    
 
     public void setMaxHP(float maxHP) {
         maxHealth = maxHP;

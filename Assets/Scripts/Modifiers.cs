@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,9 +37,9 @@ public class Modifiers : MonoBehaviour
         ClearDebuff = 2,
     }
     private enum Debuffs {
-        ShortSighted = 0,
-        LongWords = 1,
-        ArmsSpaghetti = 2
+        LongWords = 0,
+        ArmsSpaghetti = 1,
+        ShortSighted = 2,
     }
 
     void Start()
@@ -47,8 +48,7 @@ public class Modifiers : MonoBehaviour
         inventory.buttonMashFlag = false;
         inventory.clearDebuffFlag = false;
         inventory.hpRegenFlag = false;
-        // Begin countdown for debuff
-        StartCoroutine(ObtainDebuffAfterTime(debuffCooldownDuration));
+        
 
         // Obtain text components for faster access
         textComponents = new List<TMP_Text>() {
@@ -57,6 +57,11 @@ public class Modifiers : MonoBehaviour
             wordOutputs[2].GetComponent<TMP_Text>()
         };
 
+    }
+
+    public void BeginDebuffs() {
+       // Begin countdown for debuff
+        StartCoroutine(ObtainDebuffAfterTime(debuffCooldownDuration));
     }
 
     // Update is called once per frame
@@ -86,6 +91,7 @@ public class Modifiers : MonoBehaviour
                 endDebuffRunning = true;
                 StartCoroutine(EndDebuffAfterTime(armsSpaghettiDuration, (int)Debuffs.ArmsSpaghetti));
             }
+            Debug.LogWarning("[WARNING] Shortsighted flag triggered");
         }
 
         if (inventory.armsSpaghettiFlag) {
@@ -256,20 +262,23 @@ public class Modifiers : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         // Pick a random debuff
-        int rngNum = UnityEngine.Random.Range(1,4);
-        if (rngNum == 1){
-            inventory.shortSightedFlag = true;
-            Debug.Log("Debuff Sight");
-            modifiers[(int)Debuffs.ShortSighted + 3].color = activeColor;
-        }else if(rngNum == 2){
+        int rngNum = UnityEngine.Random.Range(0,2);
+        if(rngNum == (int)Debuffs.ArmsSpaghetti){
             inventory.armsSpaghettiFlag = true;
-            Debug.Log("Debuff Spage");
+            Debug.Log("Debuff Spaghetti");
             modifiers[(int)Debuffs.ArmsSpaghetti + 3].color = activeColor;
-        }else if(rngNum == 3){
+        }else if(rngNum == (int)Debuffs.LongWords){
             inventory.longWordsFlag = true;
             Debug.Log("Debuff Long ");
             modifiers[(int)Debuffs.LongWords + 3].color = activeColor;
         }
+
+        // else if (rngNum == (int)Debuffs.ShortSighted){
+        //     inventory.shortSightedFlag = true;
+        //     Debug.Log("Debuff Sight");
+        //     modifiers[(int)Debuffs.ShortSighted + 3].color = activeColor;
+        // }
+        
     }
 
     /**
@@ -291,9 +300,12 @@ public class Modifiers : MonoBehaviour
                 inventory.longWordsFlag = false;
                 modifiers[(int)Debuffs.LongWords + 3].color = inactiveColor;
                 break;
-            case (int)Debuffs.ShortSighted:
-                inventory.shortSightedFlag = false;
-                modifiers[(int)Debuffs.ShortSighted + 3].color = inactiveColor; 
+            // case (int)Debuffs.ShortSighted:
+            //     inventory.shortSightedFlag = false;
+            //     modifiers[(int)Debuffs.ShortSighted + 3].color = inactiveColor; 
+            //     break;
+            default:
+                Debug.LogWarning(String.Format("[WARNING] Invalid Debuff Code {0} Passed", debuffCode.ToString()));
                 break;
         }
 
