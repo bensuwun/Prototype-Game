@@ -323,6 +323,9 @@ public class CustomTyper : MonoBehaviour
                 // Fade out of scene
                 StopAllCoroutines();
                 soundManager.PlayBGMResult("DEFEAT", false);
+
+                // Set to level 5
+                DataManager.SaveLevel(LEVEL + 1);
                 FadeoutAnimator.SetTrigger("Fadeout");
                 StartCoroutine(FadeOutSound.FadeOut(soundManager.BGMAudioSource, 4));
                 
