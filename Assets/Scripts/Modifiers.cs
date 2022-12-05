@@ -38,9 +38,9 @@ public class Modifiers : MonoBehaviour
         ClearDebuff = 2,
     }
     private enum Debuffs {
-        LongWords = 0,
-        ArmsSpaghetti = 1,
-        ShortSighted = 2,
+        ShortSighted = 0,
+        LongWords = 1,
+        ArmsSpaghetti = 2,
     }
 
     void Start()
@@ -266,7 +266,7 @@ public class Modifiers : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         // Pick a random debuff
-        int rngNum = UnityEngine.Random.Range(0,2);
+        int rngNum = UnityEngine.Random.Range(1,3);
         if(rngNum == (int)Debuffs.ArmsSpaghetti){
             inventory.armsSpaghettiFlag = true;
             Debug.Log("Debuff Spaghetti");
