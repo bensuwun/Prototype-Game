@@ -327,7 +327,7 @@ public class CustomTyper : MonoBehaviour
                 // Set to level 5
                 DataManager.SaveLevel(LEVEL + 1);
                 FadeoutAnimator.SetTrigger("Fadeout");
-                StartCoroutine(FadeOutSound.FadeOut(soundManager.BGMAudioSource, 4));
+                StartCoroutine(FadeOutSound.FadeOut(soundManager.BGMAudioSource, 2));
                 
             }
             else if (!isModalShowing) {
