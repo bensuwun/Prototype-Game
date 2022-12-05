@@ -5847,8 +5847,8 @@ MonoBehaviour:
   m_text: Next your thumb on your right hand can also rest above the space key and
     let your fingers rest at the J, K, L keys
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7514162999427814d90dd09fd0a99ddb, type: 2}
-  m_sharedMaterial: {fileID: 7280892906062884477, guid: 7514162999427814d90dd09fd0a99ddb, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 464480371a6e41a43b3ad16872d96533, type: 2}
+  m_sharedMaterial: {fileID: -6816878684491159730, guid: 464480371a6e41a43b3ad16872d96533, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
